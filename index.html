@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edo Bagus Pangestu - Futuristic CV</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Orbitron (Heading) & Inter (Body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome untuk Ikon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Library untuk PDF Export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <!-- Konfigurasi Tailwind -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class', // Tetap dark mode sebagai default
+            theme: {
+                extend: {
+                    colors: {
+                        'dark-bg': '#0a0a0f',
+                        'card-bg': 'rgba(255, 255, 255, 0.05)',
+                        'neon-cyan': '#00ffff',
+                        'neon-purple': '#bf00ff',
+                    },
+                    fontFamily: {
+                        'sans': ['Inter', 'sans-serif'],
+                        'display': ['Orbitron', 'sans-serif'],
+                    },
+                    animation: {
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                        'float': 'float 6s ease-in-out infinite',
+                        'slide-in': 'slideIn 0.5s ease-out',
+                        'gradient': 'gradient 8s ease infinite',
+                        'typing': 'typing 3.5s steps(40, end)',
+                        'blink': 'blink .75s step-end infinite',
+                    },
+                    keyframes: {
+                        glow: {
+                            '0%': { textShadow: '0 0 5px #00ffff, 0 0 10px #00ffff, 0 0 15px #00ffff;' },
+                            '100%': { textShadow: '0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff, 0 0 40px #00ffff;' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        slideIn: {
+                            '0%': { opacity: '0', transform: 'translateX(-50px)' },
+                            '100%': { opacity: '1', transform: 'translateX(0)' },
+                        },
+                        gradient: {
+                            '0%, 100%': { backgroundPosition: '0% 50%' },
+                            '50%': { backgroundPosition: '100% 50%' },
+                        },
+                        typing: {
+                            'from': { width: '0' },
+                            'to': { width: '100%' }
+                        },
+                        blink: {
+                            'from, to': { borderColor: 'transparent' },
+                            '50%': { borderColor: 'white' }
+                        }
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                        'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0f;
+            color: #e0e0e0;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        /* Gradient Background Animation */
+        .gradient-bg {
+            background: linear-gradient(-45deg, #0a0a0f, #1a0033, #001a33, #0a0a0f);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+
+        /* Glassmorphism Effect */
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Neon Border */
+        .neon-border {
+            box-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff, inset 0 0 5px rgba(0, 255, 255, 0.2);
+        }
+
+        /* Text Glitch Effect */
+        .glitch {
+            position: relative;
+            color: white;
+            font-size: 4rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            text-shadow: 0.05em 0 0 rgba(255, 0, 0, 0.75),
+                        -0.025em -0.05em 0 rgba(0, 255, 0, 0.75),
+                        0.025em 0.05em 0 rgba(0, 0, 255, 0.75);
+            animation: glitch 500ms infinite;
+        }
+
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .glitch::before {
+            animation: glitch-1 0.5s infinite;
+            color: #00ffff;
+            z-index: -1;
+        }
+
+        .glitch::after {
+            animation: glitch-2 0.5s infinite;
+            color: #ff00ff;
+            z-index: -2;
+        }
+
+        @keyframes glitch {
+            0%, 100% { text-shadow: 0.05em 0 0 rgba(255, 0, 0, 0.75), -0.05em -0.025em 0 rgba(0, 255, 0, 0.75), 0.025em 0.05em 0 rgba(0, 0, 255, 0.75); }
+            14% { text-shadow: 0.05em 0 0 rgba(255, 0, 0, 0.75), -0.05em -0.025em 0 rgba(0, 255, 0, 0.75), 0.025em 0.05em 0 rgba(0, 0, 255, 0.75); }
+            15% { text-shadow: -0.05em -0.025em 0 rgba(255, 0, 0, 0.75), 0.025em 0.025em 0 rgba(0, 255, 0, 0.75), -0.05em -0.05em 0 rgba(0, 0, 255, 0.75); }
+            49% { text-shadow: -0.05em -0.025em 0 rgba(255, 0, 0, 0.75), 0.025em 0.025em 0 rgba(0, 255, 0, 0.75), -0.05em -0.05em 0 rgba(0, 0, 255, 0.75); }
+            50% { text-shadow: 0.025em 0.05em 0 rgba(255, 0, 0, 0.75), 0.05em 0 0 rgba(0, 255, 0, 0.75), 0 -0.05em 0 rgba(0, 0, 255, 0.75); }
+            99% { text-shadow: 0.025em 0.05em 0 rgba(255, 0, 0, 0.75), 0.05em 0 0 rgba(0, 255, 0, 0.75), 0 -0.05em 0 rgba(0, 0, 255, 0.75); }
+        }
+
+        @keyframes glitch-1 {
+            0%, 100% { clip: rect(42px, 9999px, 44px, 0); transform: skew(0.5deg); }
+            5% { clip: rect(12px, 9999px, 85px, 0); transform: skew(0.5deg); }
+            10% { clip: rect(48px, 9999px, 23px, 0); transform: skew(0.8deg); }
+            15% { clip: rect(65px, 9999px, 88px, 0); transform: skew(0.2deg); }
+            20% { clip: rect(33px, 9999px, 11px, 0); transform: skew(0.5deg); }
+            45% { clip: rect(78px, 9999px, 55px, 0); transform: skew(0.6deg); }
+            50% { clip: rect(21px, 9999px, 99px, 0); transform: skew(0.9deg); }
+            55% { clip: rect(5px, 9999px, 77px, 0); transform: skew(0.3deg); }
+            60% { clip: rect(45px, 9999px, 22px, 0); transform: skew(0.4deg); }
+            70% { clip: rect(88px, 9999px, 6px, 0); transform: skew(0.8deg); }
+            80% { clip: rect(10px, 9999px, 66px, 0); transform: skew(0.5deg); }
+            90% { clip: rect(54px, 9999px, 32px, 0); transform: skew(0.7deg); }
+        }
+
+        @keyframes glitch-2 {
+            0%, 100% { clip: rect(65px, 9999px, 119px, 0); transform: skew(0.8deg); }
+            5% { clip: rect(95px, 9999px, 122px, 0); transform: skew(0.3deg); }
+            10% { clip: rect(18px, 9999px, 42px, 0); transform: skew(0.6deg); }
+            15% { clip: rect(88px, 9999px, 12px, 0); transform: skew(0.9deg); }
+            20% { clip: rect(77px, 9999px, 5px, 0); transform: skew(0.4deg); }
+            45% { clip: rect(12px, 9999px, 55px, 0); transform: skew(0.2deg); }
+            50% { clip: rect(44px, 9999px, 88px, 0); transform: skew(0.5deg); }
+            55% { clip: rect(22px, 9999px, 13px, 0); transform: skew(0.7deg); }
+            60% { clip: rect(99px, 9999px, 33px, 0); transform: skew(0.3deg); }
+            70% { clip: rect(8px, 9999px, 76px, 0); transform: skew(0.8deg); }
+            80% { clip: rect(66px, 9999px, 11px, 0); transform: skew(0.4deg); }
+            90% { clip: rect(32px, 9999px, 54px, 0); transform: skew(0.6deg); }
+        }
+
+        /* Partikel Background */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a1a2e;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, #00ffff, #bf00ff);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(45deg, #bf00ff, #00ffff);
+        }
+
+        /* Loading spinner */
+        .spinner {
+            border: 3px solid rgba(0, 255, 255, 0.1);
+            border-radius: 50%;
+            border-top: 3px solid #00ffff;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+    </style>
+</head>
+<body class="gradient-bg">
+
+    <!-- Canvas untuk Partikel -->
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- Header & Navigation -->
+    <header class="glass sticky top-0 z-50 transition-all duration-300">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full flex-shrink-0"></div>
+                <div>
+                    <h1 class="text-xl font-bold text-white font-display">EDO BAGUS</h1>
+                    <p class="text-xs text-cyan-300">IT Support Specialist</p>
+                </div>
+            </div>
+            
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="#about" class="text-gray-300 hover:text-neon-cyan transition-colors duration-300">Tentang</a>
+                <a href="#experience" class="text-gray-300 hover:text-neon-cyan transition-colors duration-300">Pengalaman</a>
+                <a href="#skills" class="text-gray-300 hover:text-neon-cyan transition-colors duration-300">Keahlian</a>
+                <a href="#portfolio" class="text-gray-300 hover:text-neon-cyan transition-colors duration-300">Portofolio</a>
+                <a href="#contact" class="text-gray-300 hover:text-neon-cyan transition-colors duration-300">Kontak</a>
+                <button id="export-pdf" class="px-4 py-2 bg-gradient-to-r from-cyan-500 to-purple-500 text-white font-bold rounded-full hover:shadow-neon-border hover:scale-105 transform transition-all duration-300 flex items-center">
+                    <i class="fas fa-file-pdf mr-2"></i>
+                    <span>Export PDF</span>
+                </button>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-button" class="md:hidden text-white">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </nav>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden glass border-t border-gray-700">
+            <a href="#about" class="block px-6 py-3 text-gray-300 hover:bg-white/10">Tentang</a>
+            <a href="#experience" class="block px-6 py-3 text-gray-300 hover:bg-white/10">Pengalaman</a>
+            <a href="#skills" class="block px-6 py-3 text-gray-300 hover:bg-white/10">Keahlian</a>
+            <a href="#portfolio" class="block px-6 py-3 text-gray-300 hover:bg-white/10">Portofolio</a>
+            <a href="#contact" class="block px-6 py-3 text-gray-300 hover:bg-white/10">Kontak</a>
+            <button id="export-pdf-mobile" class="w-full text-left px-6 py-3 text-gray-300 hover:bg-white/10 flex items-center">
+                <i class="fas fa-file-pdf mr-2"></i>
+                <span>Export PDF</span>
+            </button>
+        </div>
+    </header>
+
+    <main id="cv-content">
+        <!-- Hero Section -->
+        <section id="hero" class="container mx-auto px-6 py-20 text-center min-h-screen flex items-center justify-center">
+            <div>
+                <h2 class="text-3xl md:text-4xl font-light text-gray-400 mb-2 animate-slide-in">Hello, I am</h2>
+                <h1 class="glitch font-display" data-text="EDO BAGUS">EDO BAGUS</h1>
+                <div class="mt-6 overflow-hidden border-r-4 border-white pr-1 animate-typing">
+                    <p class="text-xl md:text-2xl text-cyan-300 font-light">IT Support | Tech Enthusiast</p>
+                </div>
+                <div class="mt-10 flex justify-center space-x-4">
+                    <a href="#contact" class="px-8 py-3 bg-gradient-to-r from-cyan-500 to-purple-500 text-white font-bold rounded-full hover:shadow-neon-border hover:scale-105 transform transition-all duration-300">
+                        Hubungi Saya
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+       <section id="about" class="container mx-auto px-6 py-20 min-h-screen flex items-center">
+            <div class="text-center w-full">
+                <h2 class="text-4xl font-bold mb-4 font-display text-white">Tentang Saya</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-cyan-500 to-purple-500 mx-auto mb-12"></div>
+                <div class="flex flex-col lg:flex-row items-center justify-center gap-12">
+                    <div class="flex-shrink-0">
+                        <!-- Ganti 'nama-foto-anda.jpg' dengan nama file gambar Anda -->
+                        <img src="foto/anda.jpg" alt="Profile" class="w-64 h-64 rounded-full border-4 border-neon-cyan neon-border animate-float">
+                    </div>
+                    <div class="glass p-8 rounded-lg max-w-2xl text-left">
+                        <p class="text-lg leading-relaxed">
+                            Seorang profesional IT Support yang bersemangat dalam dunia teknologi, dengan fokus pada troubleshooting, maintenance, dan solusi infrastruktur TI yang efisien. Berpengalaman dalam mengelola sistem operasi, jaringan, dan memberikan dukungan teknis prima untuk memastikan operasional berjalan lancar. Selalu terbuka terhadap tantangan baru dan teknologi terkini.
+                        </p>
+                        <div class="mt-6 flex flex-wrap gap-4">
+                            <span class="px-4 py-2 bg-cyan-500/20 text-cyan-300 rounded-full text-sm border border-cyan-500/50">Problem Solving</span>
+                            <span class="px-4 py-2 bg-purple-500/20 text-purple-300 rounded-full text-sm border border-purple-500/50">Networking</span>
+                            <span class="px-4 py-2 bg-pink-500/20 text-pink-300 rounded-full text-sm border border-pink-500/50">Hardware Expert</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+      <section id="experience" class="py-20">
+    <div class="container mx-auto px-6">
+        <h2 class="text-4xl font-bold text-center mb-4 font-display text-white">Pengalaman</h2>
+        <div class="w-24 h-1 bg-gradient-to-r from-cyan-500 to-purple-500 mx-auto mb-12"></div>
+        <div class="space-y-8">
+            <!-- Experience Card 1 -->
+            <div class="glass p-6 rounded-lg border-l-4 border-cyan-500 hover:scale-[1.02] transform transition-all duration-300">
+                <h3 class="text-2xl font-bold text-cyan-300 font-display">IT Support</h3>
+                <h4 class="text-lg text-gray-300">PT Rupa Raya Indonesia</h4>
+                <p class="text-sm text-gray-500 mb-3">2026 - Sekarang | Semarang</p>
+                <ul class="list-disc list-inside text-gray-400 space-y-1">
+                    <li>Melakukan troubleshooting harian hardware (Laptop/PC) dan software.</li>
+                    <li>Mengelola instalasi sistem operasi (Windows/Linux), driver, dan aplikasi.</li>
+                    <li>Konfigurasi dan maintenance jaringan (LAN/Wi-Fi).</li>
+                </ul>
+            </div>
+            <!-- Experience Card 2 -->
+            <div class="glass p-6 rounded-lg border-l-4 border-purple-500 hover:scale-[1.02] transform transition-all duration-300">
+                <h3 class="text-2xl font-bold text-purple-300 font-display">IT Support</h3>
+                <h4 class="text-lg text-gray-300">CV Aneka Jaya Sambiroto</h4>
+                <p class="text-sm text-gray-500 mb-3">2025 | Semarang</p>
+                <ul class="list-disc list-inside text-gray-400 space-y-1">
+                    <li>Menangani perbaikan komputer dan perangkat periferal.</li>
+                    <li>Instalasi software dan update patch keamanan sistem.</li>
+                    <li>Melakukan backup data rutin untuk keamanan informasi.</li>
+                </ul>
+            </div>
+            <!-- Experience Card 3 (Baru Ditambahkan) -->
+            <div class="glass p-6 rounded-lg border-l-4 border-cyan-500 hover:scale-[1.02] transform transition-all duration-300">
+                <h3 class="text-2xl font-bold text-cyan-300 font-display">Teknisi Penguji</h3>
+                <h4 class="text-lg text-gray-300">PT Hartono Istana Teknologi</h4>
+                <p class="text-sm text-gray-500 mb-3">2016 | Semarang</p>
+                <ul class="list-disc list-inside text-gray-400 space-y-1">
+                    <li>Melakukan pengujian fungsionalitas dan kualitas (Quality Control) pada produk elektronik (home appliance).</li>
+                    <li>Mendiagnosa komponen PCB dan melakukan pengujian safety.</li>
+                    <li>Membuat laporan hasil pengujian dan rekomendasi perbaikan ke tim produksi.</li>
+                    <li>Menggunakan alat ukur (Multimeter, Osiloskop) untuk verifikasi spesifikasi produk.</li>
+                    <li>Memastikan standar keamanan dan kualitas produk terpenuhi sebelum distribusi.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="container mx-auto px-6 py-20">
+            <h2 class="text-4xl font-bold text-center mb-4 font-display text-white">Keahlian</h2>
+            <div class="w-24 h-1 bg-gradient-to-r from-cyan-500 to-purple-500 mx-auto mb-12"></div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="glass p-6 rounded-lg">
+                    <h4 class="text-xl font-semibold mb-6 text-cyan-300">Teknis</h4>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <p class="font-medium">Troubleshooting</p>
+                                <span class="text-cyan-300">95%</span>
+                            </div>
+                            <div class="w-full bg-gray-700 rounded-full h-2">
+                                <div class="bg-gradient-to-r from-cyan-500 to-cyan-300 h-2 rounded-full" style="width: 95%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <p class="font-medium">Networking</p>
+                                <span class="text-purple-300">80%</span>
+                            </div>
+                            <div class="w-full bg-gray-700 rounded-full h-2">
+                                <div class="bg-gradient-to-r from-purple-500 to-purple-300 h-2 rounded-full" style="width: 80%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass p-6 rounded-lg">
+                    <h4 class="text-xl font-semibold mb-6 text-purple-300">Lunak</h4>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <p class="font-medium">Problem Solving</p>
+                                <span class="text-cyan-300">90%</span>
+                            </div>
+                            <div class="w-full bg-gray-700 rounded-full h-2">
+                                <div class="bg-gradient-to-r from-cyan-500 to-cyan-300 h-2 rounded-full" style="width: 90%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <p class="font-medium">Teamwork</p>
+                                <span class="text-purple-300">95%</span>
+                            </div>
+                            <div class="w-full bg-gray-700 rounded-full h-2">
+                                <div class="bg-gradient-to-r from-purple-500 to-purple-300 h-2 rounded-full" style="width: 95%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Portfolio Section -->
+    <section id="portfolio" class="py-20">
+            <div class="container mx-auto px-6">
+                <h2 class="text-4xl font-bold text-center mb-4 font-display text-white">Portofolio</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-cyan-500 to-purple-500 mx-auto mb-12"></div>
+
+                <!-- Wrapper untuk menengahkan grid -->
+                <div class="flex justify-center">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full lg:w-10/12 xl:w-8/12">
+                        <!-- Project Card 1: IoT Website -->
+                        <div class="glass rounded-lg overflow-hidden group hover:scale-105 transform transition-all duration-500">
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold mb-2 text-white">Website Internet of Things (IoT)</h3>
+                                <p class="text-gray-400 text-sm mb-4">Pengembangan website untuk Sinergi Surya yang mengintegrasikan berbagai perangkat IoT untuk monitoring dan kontrol.</p>
+                               
+                            </div>
+                        </div>
+
+                        <!-- Project Card 2: Sistem Stok Barang -->
+                        <div class="glass rounded-lg overflow-hidden group hover:scale-105 transform transition-all duration-500">
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold mb-2 text-white">Sistem Stok Barang Berbasis Web</h3>
+                                <p class="text-gray-400 text-sm mb-4">Aplikasi web untuk mengelola stok barang secara real-time, mencakup pencatatan barang masuk/keluar, dan laporan persediaan.</p>
+                                
+                            </div>
+                        </div>
+
+                        <!-- Project Card 3: Aplikasi Desktop PT Rupa Raya -->
+                        <div class="glass rounded-lg overflow-hidden group hover:scale-105 transform transition-all duration-500">
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold mb-2 text-white">Aplikasi Desktop Monitoring & Absensi</h3>
+                                <p class="text-gray-400 text-sm mb-4">Sistem desktop untuk PT Rupa Raya Semarang dengan fitur integrasi mesin absensi Fingerspot, pencatatan kode OTP, dan monitoring status PC karyawan.</p>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Akhir dari wrapper -->
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="container mx-auto px-6 py-20 text-center">
+            <h2 class="text-4xl font-bold mb-4 font-display text-white">Hubungi Saya</h2>
+            <div class="w-24 h-1 bg-gradient-to-r from-cyan-500 to-purple-500 mx-auto mb-12"></div>
+            <p class="mb-8 text-gray-300">Mari terhubung dan bicarakan tentang teknologi!</p>
+            <div class="flex justify-center space-x-6 mb-8 text-3xl">
+                <a href="mailto:edobagusp14@gmail.com" class="text-gray-400 hover:text-neon-cyan transition-colors duration-300"><i class="fas fa-envelope"></i></a>
+                <a href="https://github.com/edobagusp14" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-neon-cyan transition-colors duration-300"><i class="fab fa-github"></i></a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="glass text-center py-6">
+        <p class="text-sm text-gray-400">&copy; 2026 Edo Bagus. Powered by <span class="text-cyan-300">Technology</span> & <span class="text-purple-300">Passion</span>.</p>
+    </footer>
+
+    <!-- JavaScript untuk Interaktivitas & Partikel -->
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Smooth Scroll for Navigation Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Particle Background
+        const canvas = document.getElementById('particles-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedX = Math.random() * 0.5 - 0.25;
+                this.speedY = Math.random() * 0.5 - 0.25;
+                this.opacity = Math.random() * 0.5 + 0.2;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x > canvas.width || this.x < 0) this.speedX *= -1;
+                if (this.y > canvas.height || this.y < 0) this.speedY *= -1;
+            }
+
+            draw() {
+                ctx.fillStyle = `rgba(0, 255, 255, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            const numberOfParticles = (canvas.width * canvas.height) / 15000;
+            for (let i = 0; i < numberOfParticles; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            initParticles();
+        });
+
+        initParticles();
+        animateParticles();
+
+        // PDF Export Functionality
+        document.getElementById('export-pdf').addEventListener('click', generatePDF);
+        document.getElementById('export-pdf-mobile').addEventListener('click', generatePDF);
+
+        function generatePDF() {
+            // Show loading indicator
+            const button = document.getElementById('export-pdf');
+            const buttonMobile = document.getElementById('export-pdf-mobile');
+            const originalContent = button.innerHTML;
+            const originalContentMobile = buttonMobile.innerHTML;
+            
+            button.innerHTML = '<span class="spinner"></span>Generating...';
+            button.disabled = true;
+            buttonMobile.innerHTML = '<span class="spinner"></span>Generating...';
+            buttonMobile.disabled = true;
+
+            // Get the CV content element
+            const element = document.getElementById('cv-content');
+            
+            // Configure html2canvas options
+            const opt = {
+                margin: 10,
+                filename: 'Edo_Bagus_CV.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { 
+                    scale: 2,
+                    useCORS: true,
+                    logging: false,
+                    backgroundColor: '#0a0a0f'
+                },
+                jsPDF: { 
+                    unit: 'mm', 
+                    format: 'a4', 
+                    orientation: 'portrait' 
+                }
+            };
+
+            // Use html2canvas to capture the content
+            html2canvas(element, opt.html2canvas).then(canvas => {
+                const imgData = canvas.toDataURL('image/jpeg', 0.98);
+                const pdf = new jspdf.jsPDF(opt.jsPDF.orientation, opt.jsPDF.unit, opt.jsPDF.format);
+                
+                const imgWidth = 210; // A4 width in mm
+                const pageHeight = 295; // A4 height in mm
+                const imgHeight = canvas.height * imgWidth / canvas.width;
+                let heightLeft = imgHeight;
+                let position = 0;
+
+                // Add the image to the PDF
+                pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+
+                // Add new pages if content is longer than one page
+                while (heightLeft >= 0) {
+                    position = heightLeft - imgHeight;
+                    pdf.addPage();
+                    pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+                    heightLeft -= pageHeight;
+                }
+
+                // Save the PDF
+                pdf.save('Edo_Bagus_CV.pdf');
+                
+                // Reset button
+                button.innerHTML = originalContent;
+                button.disabled = false;
+                buttonMobile.innerHTML = originalContentMobile;
+                buttonMobile.disabled = false;
+            }).catch(error => {
+                console.error('Error generating PDF:', error);
+                
+                // Reset button and show error message
+                button.innerHTML = originalContent;
+                button.disabled = false;
+                buttonMobile.innerHTML = originalContentMobile;
+                buttonMobile.disabled = false;
+                
+                alert('Terjadi kesalahan saat membuat PDF. Silakan coba lagi.');
+            });
+        }
+
+    </script>
+</body>
+</html>

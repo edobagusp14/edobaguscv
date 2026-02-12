@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edo Bagus Pangestu - CV</title>
+
+<style>
+    @page {
+        size: A4;
+        margin: 0;
+    }
+
+    body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background: #f4f4f4;
+    }
+
+    .page {
+        width: 210mm;
+        min-height: 297mm;
+        background: white;
+        margin: auto;
+        padding: 20mm;
+        box-sizing: border-box;
+    }
+
+    h1 {
+        font-size: 28px;
+        margin: 0;
+        letter-spacing: 1px;
+    }
+
+    h2 {
+        font-size: 14px;
+        margin-bottom: 6px;
+        text-transform: uppercase;
+        border-bottom: 2px solid #000;
+        padding-bottom: 4px;
+        margin-top: 20px;
+    }
+
+    h3 {
+        margin: 5px 0;
+        font-size: 13px;
+    }
+
+    p {
+        font-size: 12px;
+        margin: 4px 0;
+        line-height: 1.5;
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .contact {
+        text-align: right;
+        font-size: 12px;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: 65% 35%;
+        gap: 20px;
+    }
+
+    ul {
+        padding-left: 18px;
+        margin: 5px 0;
+        font-size: 12px;
+    }
+
+    .job-title {
+        font-weight: bold;
+    }
+
+    .company {
+        font-style: italic;
+    }
+
+    .date {
+        float: right;
+        font-size: 11px;
+    }
+
+    .skills-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .skills-list li {
+        margin-bottom: 6px;
+    }
+
+    .badge {
+        display: inline-block;
+        background: #eee;
+        padding: 4px 8px;
+        margin: 3px 3px 3px 0;
+        font-size: 11px;
+        border-radius: 4px;
+    }
+
+    @media print {
+        body {
+            background: white;
+        }
+        .page {
+            margin: 0;
+            box-shadow: none;
+        }
+    }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div>
+            <h1>EDO BAGUS PANGESTU</h1>
+            <p>IT Support Specialist</p>
+        </div>
+        <div class="contact">
+            <p>Email: edobagusp14@gmail.com</p>
+            <p>GitHub: github.com/edobagusp14</p>
+            <p>Semarang, Indonesia</p>
+        </div>
+    </div>
+
+    <div class="grid">
+
+        <!-- LEFT COLUMN -->
+        <div>
+
+            <h2>Profil</h2>
+            <p>
+                Profesional IT Support dengan pengalaman dalam troubleshooting hardware & software,
+                instalasi sistem operasi, konfigurasi jaringan, dan maintenance infrastruktur IT.
+                Terbiasa bekerja cepat, detail, dan berorientasi solusi.
+            </p>
+
+            <h2>Pengalaman Kerja</h2>
+
+            <p class="job-title">
+                IT Support
+                <span class="date">2026 - Sekarang</span>
+            </p>
+            <p class="company">PT Rupa Raya Indonesia – Semarang</p>
+            <ul>
+                <li>Troubleshooting hardware dan software.</li>
+                <li>Instalasi OS Windows/Linux dan aplikasi.</li>
+                <li>Konfigurasi & maintenance jaringan LAN/WiFi.</li>
+            </ul>
+
+            <p class="job-title">
+                IT Support
+                <span class="date">2025</span>
+            </p>
+            <p class="company">CV Aneka Jaya Sambiroto – Semarang</p>
+            <ul>
+                <li>Perbaikan komputer dan periferal.</li>
+                <li>Update sistem & patch keamanan.</li>
+                <li>Backup data rutin.</li>
+            </ul>
+
+            <p class="job-title">
+                Teknisi Penguji
+                <span class="date">2016</span>
+            </p>
+            <p class="company">PT Hartono Istana Teknologi – Semarang</p>
+            <ul>
+                <li>Quality control produk elektronik.</li>
+                <li>Pengujian PCB & komponen elektronik.</li>
+                <li>Menggunakan Multimeter & Osiloskop.</li>
+            </ul>
+
+            <h2>Proyek</h2>
+            <ul>
+                <li>Website IoT Monitoring – Sinergi Surya</li>
+                <li>Sistem Stok Barang Berbasis Web</li>
+                <li>Aplikasi Desktop Monitoring & Absensi</li>
+            </ul>
+
+        </div>
+
+        <!-- RIGHT COLUMN -->
+        <div>
+
+            <h2>Keahlian Teknis</h2>
+            <ul class="skills-list">
+                <li>Troubleshooting Hardware & Software</li>
+                <li>Instalasi Windows & Linux</li>
+                <li>Networking (LAN, Router, Mikrotik)</li>
+                <li>Maintenance PC & Laptop</li>
+                <li>Backup & Security System</li>
+            </ul>
+
+            <h2>Soft Skills</h2>
+            <div>
+                <span class="badge">Problem Solving</span>
+                <span class="badge">Teamwork</span>
+                <span class="badge">Communication</span>
+                <span class="badge">Fast Learner</span>
+            </div>
+
+            <h2>Pendidikan</h2>
+            <p><strong>SMK / Teknik Komputer & Jaringan</strong></p>
+            <p>Semarang</p>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
