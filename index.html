@@ -1,2656 +1,1160 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edologia - Creative Portfolio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --primary: #6C63FF;
-            --secondary: #FF6584;
-            --accent: #43E97B;
-            --dark: #0A0A1A;
-            --dark2: #12122A;
-            --card: #1A1A35;
-            --text: #E8E8FF;
-            --text-muted: #8888AA;
-            --gradient1: linear-gradient(135deg, #6C63FF, #FF6584);
-            --gradient2: linear-gradient(135deg, #43E97B, #38F9D7);
-            --gradient3: linear-gradient(135deg, #FA709A, #FEE140);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: var(--dark);
-            color: var(--text);
-            overflow-x: hidden;
-        }
-
-        /* ===== SCROLLBAR ===== */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: var(--dark);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--primary);
-            border-radius: 3px;
-        }
-
-        /* ===== CURSOR ===== */
-        .cursor {
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--primary);
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 9999;
-            transition: transform 0.1s ease;
-        }
-
-        .cursor-follower {
-            width: 40px;
-            height: 40px;
-            background: rgba(108, 99, 255, 0.15);
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 9998;
-            transition: transform 0.3s ease, width 0.3s, height 0.3s;
-        }
-
-        /* ===== LOADER ===== */
-        .loader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--dark);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10000;
-            transition: opacity 0.5s ease, visibility 0.5s ease;
-        }
-
-        .loader.hidden {
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        .loader-content {
-            text-align: center;
-        }
-
-        .loader-logo {
-            font-size: 3rem;
-            font-weight: 900;
-            background: var(--gradient1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: pulse 1.5s ease infinite;
-        }
-
-        .loader-bar {
-            width: 200px;
-            height: 3px;
-            background: var(--card);
-            border-radius: 3px;
-            margin: 20px auto 0;
-            overflow: hidden;
-        }
-
-        .loader-progress {
-            height: 100%;
-            background: var(--gradient1);
-            border-radius: 3px;
-            animation: loading 2s ease forwards;
-        }
-
-        @keyframes loading {
-            from { width: 0%; }
-            to { width: 100%; }
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.05); opacity: 0.8; }
-        }
-
-        /* ===== PARTICLES ===== */
-        #particles-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-            overflow: hidden;
-        }
-
-        .particle {
-            position: absolute;
-            border-radius: 50%;
-            animation: float-particle linear infinite;
-            opacity: 0;
-        }
-
-        @keyframes float-particle {
-            0% {
-                transform: translateY(100vh) rotate(0deg);
-                opacity: 0;
-            }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% {
-                transform: translateY(-100px) rotate(720deg);
-                opacity: 0;
-            }
-        }
-
-        /* ===== NAVBAR ===== */
-        .navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            padding: 20px 5%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            z-index: 1000;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(0px);
-        }
-
-        .navbar.scrolled {
-            background: rgba(10, 10, 26, 0.95);
-            backdrop-filter: blur(20px);
-            padding: 15px 5%;
-            box-shadow: 0 4px 30px rgba(108, 99, 255, 0.1);
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 900;
-            background: var(--gradient1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-decoration: none;
-            letter-spacing: -1px;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 35px;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: color 0.3s ease;
-            position: relative;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--gradient1);
-            transition: width 0.3s ease;
-        }
-
-        .nav-links a:hover {
-            color: var(--text);
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        .nav-cta {
-            padding: 10px 25px;
-            background: var(--gradient1);
-            border-radius: 50px;
-            color: white !important;
-            font-weight: 600;
-            text-decoration: none;
-            transition: transform 0.3s ease, box-shadow 0.3s ease !important;
-        }
-
-        .nav-cta:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(108, 99, 255, 0.4);
-        }
-
-        .nav-cta::after {
-            display: none !important;
-        }
-
-        .hamburger {
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-            cursor: pointer;
-            padding: 5px;
-        }
-
-        .hamburger span {
-            display: block;
-            width: 25px;
-            height: 2px;
-            background: var(--text);
-            transition: all 0.3s ease;
-        }
-
-        /* ===== HERO SECTION ===== */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-            padding: 100px 5% 0;
-        }
-
-        .hero-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-        }
-
-        .hero-orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.15;
-            animation: orb-float 8s ease infinite;
-        }
-
-        .hero-orb:nth-child(1) {
-            width: 500px;
-            height: 500px;
-            background: var(--primary);
-            top: -100px;
-            right: -100px;
-        }
-
-        .hero-orb:nth-child(2) {
-            width: 400px;
-            height: 400px;
-            background: var(--secondary);
-            bottom: -50px;
-            left: -100px;
-            animation-delay: -3s;
-        }
-
-        .hero-orb:nth-child(3) {
-            width: 300px;
-            height: 300px;
-            background: var(--accent);
-            top: 50%;
-            left: 50%;
-            animation-delay: -6s;
-        }
-
-        @keyframes orb-float {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(30px, -30px) scale(1.1); }
-            66% { transform: translate(-20px, 20px) scale(0.9); }
-        }
-
-        .hero-content {
-            text-align: center;
-            position: relative;
-            z-index: 2;
-            max-width: 900px;
-        }
-
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 20px;
-            background: rgba(108, 99, 255, 0.15);
-            border: 1px solid rgba(108, 99, 255, 0.3);
-            border-radius: 50px;
-            font-size: 0.85rem;
-            color: var(--primary);
-            margin-bottom: 30px;
-            animation: fadeInUp 0.8s ease forwards;
-            opacity: 0;
-        }
-
-        .hero-badge .dot {
-            width: 8px;
-            height: 8px;
-            background: var(--accent);
-            border-radius: 50%;
-            animation: blink 1.5s ease infinite;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-
-        .hero-title {
-            font-size: clamp(2.5rem, 7vw, 5.5rem);
-            font-weight: 900;
-            line-height: 1.1;
-            margin-bottom: 20px;
-            animation: fadeInUp 0.8s ease 0.2s forwards;
-            opacity: 0;
-        }
-
-        .hero-title .line1 {
-            display: block;
-            color: var(--text);
-        }
-
-        .hero-title .gradient-text {
-            background: var(--gradient1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .typed-wrapper {
-            display: inline-block;
-            min-width: 300px;
-        }
-
-        .hero-subtitle {
-            font-size: clamp(1rem, 2vw, 1.2rem);
-            color: var(--text-muted);
-            max-width: 600px;
-            margin: 0 auto 40px;
-            line-height: 1.8;
-            animation: fadeInUp 0.8s ease 0.4s forwards;
-            opacity: 0;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
-            animation: fadeInUp 0.8s ease 0.6s forwards;
-            opacity: 0;
-        }
-
-        .btn-primary {
-            padding: 15px 40px;
-            background: var(--gradient1);
-            border-radius: 50px;
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-primary::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: rgba(255,255,255,0.2);
-            transition: left 0.3s ease;
-        }
-
-        .btn-primary:hover::before {
-            left: 100%;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(108, 99, 255, 0.4);
-        }
-
-        .btn-secondary {
-            padding: 15px 40px;
-            background: transparent;
-            border: 2px solid rgba(108, 99, 255, 0.5);
-            border-radius: 50px;
-            color: var(--text);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .btn-secondary:hover {
-            border-color: var(--primary);
-            background: rgba(108, 99, 255, 0.1);
-            transform: translateY(-3px);
-        }
-
-        .hero-scroll {
-            position: absolute;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            animation: fadeIn 1s ease 1.2s forwards;
-            opacity: 0;
-        }
-
-        .scroll-text {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        .scroll-line {
-            width: 2px;
-            height: 50px;
-            background: linear-gradient(to bottom, var(--primary), transparent);
-            animation: scroll-anim 2s ease infinite;
-        }
-
-        @keyframes scroll-anim {
-            0% { transform: scaleY(0); transform-origin: top; }
-            50% { transform: scaleY(1); transform-origin: top; }
-            51% { transform: scaleY(1); transform-origin: bottom; }
-            100% { transform: scaleY(0); transform-origin: bottom; }
-        }
-
-        /* ===== FLOATING SHAPES ===== */
-        .floating-shapes {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .shape {
-            position: absolute;
-            opacity: 0.1;
-            animation: rotate 20s linear infinite;
-        }
-
-        .shape:nth-child(1) {
-            width: 100px;
-            height: 100px;
-            border: 3px solid var(--primary);
-            border-radius: 20px;
-            top: 20%;
-            left: 10%;
-            animation-duration: 15s;
-        }
-
-        .shape:nth-child(2) {
-            width: 60px;
-            height: 60px;
-            background: var(--secondary);
-            border-radius: 50%;
-            top: 60%;
-            right: 15%;
-            animation-duration: 20s;
-            animation-direction: reverse;
-        }
-
-        .shape:nth-child(3) {
-            width: 80px;
-            height: 80px;
-            border: 3px solid var(--accent);
-            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-            bottom: 30%;
-            left: 15%;
-            animation-duration: 25s;
-        }
-
-        .shape:nth-child(4) {
-            width: 120px;
-            height: 120px;
-            border: 3px solid var(--secondary);
-            border-radius: 50%;
-            top: 15%;
-            right: 25%;
-            animation-duration: 18s;
-            animation-direction: reverse;
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg) translateY(0px); }
-            50% { transform: rotate(180deg) translateY(-30px); }
-            to { transform: rotate(360deg) translateY(0px); }
-        }
-
-        /* ===== STATS ===== */
-        .stats {
-            padding: 80px 5%;
-            position: relative;
-            z-index: 1;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 30px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .stat-card {
-            background: var(--card);
-            border: 1px solid rgba(108, 99, 255, 0.1);
-            border-radius: 20px;
-            padding: 30px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.3s ease, border-color 0.3s ease;
-        }
-
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: var(--gradient1);
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(108, 99, 255, 0.3);
-        }
-
-        .stat-card:hover::before {
-            transform: scaleX(1);
-        }
-
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: 900;
-            background: var(--gradient1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .stat-label {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            margin-top: 5px;
-        }
-
-        /* ===== SECTION STYLES ===== */
-        section {
-            padding: 100px 5%;
-            position: relative;
-            z-index: 1;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 70px;
-        }
-
-        .section-tag {
-            display: inline-block;
-            padding: 6px 18px;
-            background: rgba(108, 99, 255, 0.15);
-            border: 1px solid rgba(108, 99, 255, 0.3);
-            border-radius: 50px;
-            font-size: 0.8rem;
-            color: var(--primary);
-            margin-bottom: 15px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        .section-title {
-            font-size: clamp(2rem, 4vw, 3rem);
-            font-weight: 800;
-            line-height: 1.2;
-        }
-
-        .section-title span {
-            background: var(--gradient1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .section-desc {
-            font-size: 1rem;
-            color: var(--text-muted);
-            max-width: 600px;
-            margin: 15px auto 0;
-            line-height: 1.8;
-        }
-
-        /* ===== ABOUT SECTION ===== */
-        .about {
-            background: var(--dark2);
-        }
-
-        .about-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 80px;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .about-image {
-            position: relative;
-        }
-
-        .about-img-wrapper {
-            position: relative;
-            width: 100%;
-            aspect-ratio: 1;
-            max-width: 450px;
-        }
-
-        .about-img-bg {
-            width: 100%;
-            height: 100%;
-            background: var(--gradient1);
-            border-radius: 30px;
-            opacity: 0.1;
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
-
-        .about-img-inner {
-            width: 85%;
-            height: 85%;
-            background: var(--card);
-            border-radius: 25px;
-            position: absolute;
-            top: 7.5%;
-            left: 7.5%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            border: 1px solid rgba(108, 99, 255, 0.2);
-        }
-
-        .about-avatar {
-            font-size: 10rem;
-            text-align: center;
-            line-height: 1;
-        }
-
-        .about-badge-float {
-            position: absolute;
-            background: var(--card);
-            border: 1px solid rgba(108, 99, 255, 0.3);
-            border-radius: 15px;
-            padding: 12px 18px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            animation: badge-float 3s ease infinite;
-        }
-
-        .about-badge-float:nth-child(3) {
-            bottom: -20px;
-            left: -20px;
-            animation-delay: -1.5s;
-        }
-
-        .about-badge-float:nth-child(4) {
-            top: 20px;
-            right: -20px;
-        }
-
-        .badge-icon {
-            font-size: 1.5rem;
-        }
-
-        .badge-text strong {
-            display: block;
-            font-size: 0.9rem;
-        }
-
-        .badge-text span {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-        }
-
-        @keyframes badge-float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .about-content {
-            padding-left: 20px;
-        }
-
-        .about-content p {
-            color: var(--text-muted);
-            line-height: 1.9;
-            margin-bottom: 20px;
-            font-size: 1rem;
-        }
-
-        .skills-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 20px;
-            margin-top: 30px;
-        }
-
-        .skill-item {
-            margin-bottom: 18px;
-        }
-
-        .skill-info {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-            font-size: 0.9rem;
-        }
-
-        .skill-name {
-            color: var(--text);
-            font-weight: 500;
-        }
-
-        .skill-percent {
-            color: var(--primary);
-            font-weight: 600;
-        }
-
-        .skill-bar {
-            height: 6px;
-            background: rgba(108, 99, 255, 0.1);
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .skill-fill {
-            height: 100%;
-            background: var(--gradient1);
-            border-radius: 10px;
-            width: 0%;
-            transition: width 1.5s ease;
-        }
-
-        /* ===== SERVICES SECTION ===== */
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .service-card {
-            background: var(--card);
-            border: 1px solid rgba(108, 99, 255, 0.1);
-            border-radius: 25px;
-            padding: 40px 30px;
-            transition: all 0.4s ease;
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-        }
-
-        .service-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--gradient1);
-            opacity: 0;
-            transition: opacity 0.4s ease;
-            z-index: 0;
-        }
-
-        .service-card:hover::before {
-            opacity: 0.05;
-        }
-
-        .service-card:hover {
-            transform: translateY(-10px);
-            border-color: rgba(108, 99, 255, 0.4);
-            box-shadow: 0 30px 60px rgba(108, 99, 255, 0.15);
-        }
-
-        .service-card > * {
-            position: relative;
-            z-index: 1;
-        }
-
-        .service-icon {
-            width: 70px;
-            height: 70px;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            margin-bottom: 25px;
-            position: relative;
-        }
-
-        .service-icon.g1 { background: rgba(108, 99, 255, 0.15); color: var(--primary); }
-        .service-icon.g2 { background: rgba(255, 101, 132, 0.15); color: var(--secondary); }
-        .service-icon.g3 { background: rgba(67, 233, 123, 0.15); color: var(--accent); }
-        .service-icon.g4 { background: rgba(255, 193, 7, 0.15); color: #FFC107; }
-        .service-icon.g5 { background: rgba(33, 150, 243, 0.15); color: #2196F3; }
-        .service-icon.g6 { background: rgba(156, 39, 176, 0.15); color: #9C27B0; }
-
-        .service-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 12px;
-        }
-
-        .service-desc {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            line-height: 1.7;
-            margin-bottom: 20px;
-        }
-
-        .service-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        .service-tag {
-            padding: 4px 12px;
-            background: rgba(108, 99, 255, 0.1);
-            border: 1px solid rgba(108, 99, 255, 0.2);
-            border-radius: 50px;
-            font-size: 0.75rem;
-            color: var(--primary);
-        }
-
-        /* ===== PORTFOLIO SECTION ===== */
-        .portfolio {
-            background: var(--dark2);
-        }
-
-        .portfolio-filter {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            margin-bottom: 50px;
-            flex-wrap: wrap;
-        }
-
-        .filter-btn {
-            padding: 8px 22px;
-            background: transparent;
-            border: 1px solid rgba(108, 99, 255, 0.3);
-            border-radius: 50px;
-            color: var(--text-muted);
-            cursor: pointer;
-            font-size: 0.85rem;
-            font-family: 'Poppins', sans-serif;
-            transition: all 0.3s ease;
-        }
-
-        .filter-btn.active,
-        .filter-btn:hover {
-            background: var(--gradient1);
-            border-color: transparent;
-            color: white;
-        }
-
-        .portfolio-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 25px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .portfolio-item {
-            border-radius: 20px;
-            overflow: hidden;
-            position: relative;
-            aspect-ratio: 4/3;
-            cursor: pointer;
-            transition: transform 0.4s ease;
-        }
-
-        .portfolio-item:hover {
-            transform: scale(1.02);
-        }
-
-        .portfolio-item.large {
-            grid-column: span 2;
-        }
-
-        .portfolio-img {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 5rem;
-            position: relative;
-        }
-
-        .portfolio-img.p1 { background: linear-gradient(135deg, #667eea, #764ba2); }
-        .portfolio-img.p2 { background: linear-gradient(135deg, #f093fb, #f5576c); }
-        .portfolio-img.p3 { background: linear-gradient(135deg, #4facfe, #00f2fe); }
-        .portfolio-img.p4 { background: linear-gradient(135deg, #43e97b, #38f9d7); }
-        .portfolio-img.p5 { background: linear-gradient(135deg, #fa709a, #fee140); }
-        .portfolio-img.p6 { background: linear-gradient(135deg, #a18cd1, #fbc2eb); }
-
-        .portfolio-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(10, 10, 26, 0.9);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: opacity 0.4s ease;
-            padding: 30px;
-            text-align: center;
-        }
-
-        .portfolio-item:hover .portfolio-overlay {
-            opacity: 1;
-        }
-
-        .portfolio-overlay h3 {
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-
-        .portfolio-overlay p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            margin-bottom: 20px;
-        }
-
-        .portfolio-links {
-            display: flex;
-            gap: 15px;
-        }
-
-        .portfolio-link {
-            width: 45px;
-            height: 45px;
-            background: var(--gradient1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            text-decoration: none;
-            font-size: 1rem;
-            transition: transform 0.3s ease;
-        }
-
-        .portfolio-link:hover {
-            transform: scale(1.1);
-        }
-
-        /* ===== TESTIMONIALS ===== */
-        .testimonials-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 25px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .testimonial-card {
-            background: var(--card);
-            border: 1px solid rgba(108, 99, 255, 0.1);
-            border-radius: 25px;
-            padding: 35px 30px;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .testimonial-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(108, 99, 255, 0.3);
-        }
-
-        .quote-icon {
-            font-size: 3rem;
-            background: var(--gradient1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            line-height: 1;
-            margin-bottom: 15px;
-            display: block;
-        }
-
-        .testimonial-text {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            line-height: 1.8;
-            margin-bottom: 25px;
-            font-style: italic;
-        }
-
-        .testimonial-author {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .author-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-        }
-
-        .a1 { background: linear-gradient(135deg, #667eea, #764ba2); }
-        .a2 { background: linear-gradient(135deg, #f093fb, #f5576c); }
-        .a3 { background: linear-gradient(135deg, #43e97b, #38f9d7); }
-
-        .author-info strong {
-            display: block;
-            font-size: 0.95rem;
-        }
-
-        .author-info span {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-        }
-
-        .stars {
-            color: #FFC107;
-            font-size: 0.8rem;
-            margin-top: 3px;
-        }
-
-        /* ===== PROCESS SECTION ===== */
-        .process {
-            background: var(--dark2);
-        }
-
-        .process-timeline {
-            max-width: 800px;
-            margin: 0 auto;
-            position: relative;
-        }
-
-        .process-timeline::before {
-            content: '';
-            position: absolute;
-            left: 50%;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: linear-gradient(to bottom, var(--primary), transparent);
-            transform: translateX(-50%);
-        }
-
-        .process-item {
-            display: flex;
-            gap: 40px;
-            margin-bottom: 60px;
-            align-items: flex-start;
-        }
-
-        .process-item:nth-child(even) {
-            flex-direction: row-reverse;
-        }
-
-        .process-content {
-            flex: 1;
-            background: var(--card);
-            border: 1px solid rgba(108, 99, 255, 0.1);
-            border-radius: 20px;
-            padding: 25px;
-            transition: all 0.3s ease;
-        }
-
-        .process-content:hover {
-            border-color: rgba(108, 99, 255, 0.3);
-            transform: translateY(-3px);
-        }
-
-        .process-number {
-            width: 50px;
-            height: 50px;
-            background: var(--gradient1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            font-size: 1.1rem;
-            flex-shrink: 0;
-            position: relative;
-            z-index: 1;
-            margin-top: 15px;
-        }
-
-        .process-content h3 {
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-
-        .process-content p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            line-height: 1.7;
-        }
-
-        /* ===== CONTACT SECTION ===== */
-        .contact-wrapper {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-
-        .contact-info h3 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-        }
-
-        .contact-info p {
-            color: var(--text-muted);
-            line-height: 1.8;
-            margin-bottom: 40px;
-        }
-
-        .contact-items {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .contact-icon {
-            width: 50px;
-            height: 50px;
-            background: rgba(108, 99, 255, 0.1);
-            border: 1px solid rgba(108, 99, 255, 0.2);
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary);
-            font-size: 1.1rem;
-            flex-shrink: 0;
-        }
-
-        .contact-item-text strong {
-            display: block;
-            font-size: 0.9rem;
-            margin-bottom: 3px;
-        }
-
-        .contact-item-text span {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-        }
-
-        .social-links {
-            display: flex;
-            gap: 15px;
-            margin-top: 40px;
-        }
-
-        .social-link {
-            width: 45px;
-            height: 45px;
-            background: var(--card);
-            border: 1px solid rgba(108, 99, 255, 0.2);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-        }
-
-        .social-link:hover {
-            background: var(--gradient1);
-            border-color: transparent;
-            color: white;
-            transform: translateY(-3px);
-        }
-
-        .contact-form {
-            background: var(--card);
-            border: 1px solid rgba(108, 99, 255, 0.1);
-            border-radius: 25px;
-            padding: 40px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-label {
-            display: block;
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--text-muted);
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 14px 18px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(108, 99, 255, 0.15);
-            border-radius: 12px;
-            color: var(--text);
-            font-size: 0.9rem;
-            font-family: 'Poppins', sans-serif;
-            transition: border-color 0.3s ease;
-            outline: none;
-        }
-
-        .form-input:focus {
-            border-color: var(--primary);
-            background: rgba(108, 99, 255, 0.05);
-        }
-
-        .form-input::placeholder {
-            color: rgba(255, 255, 255, 0.2);
-        }
-
-        textarea.form-input {
-            resize: none;
-            min-height: 120px;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        .submit-btn {
-            width: 100%;
-            padding: 15px;
-            background: var(--gradient1);
-            border: none;
-            border-radius: 12px;
-            color: white;
-            font-size: 1rem;
-            font-weight: 600;
-            font-family: 'Poppins', sans-serif;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 40px rgba(108, 99, 255, 0.3);
-        }
-
-        /* ===== FOOTER ===== */
-        footer {
-            background: var(--dark2);
-            border-top: 1px solid rgba(108, 99, 255, 0.1);
-            padding: 60px 5% 30px;
-        }
-
-        .footer-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr;
-            gap: 50px;
-            max-width: 1200px;
-            margin: 0 auto 50px;
-        }
-
-        .footer-brand p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            line-height: 1.8;
-            margin-top: 15px;
-            margin-bottom: 25px;
-        }
-
-        .footer-col h4 {
-            font-size: 1rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-            position: relative;
-        }
-
-        .footer-col h4::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 0;
-            width: 30px;
-            height: 2px;
-            background: var(--gradient1);
-        }
-
-        .footer-links {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .footer-links a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: color 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .footer-links a:hover {
-            color: var(--primary);
-        }
-
-        .footer-links a::before {
-            content: '→';
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .footer-links a:hover::before {
-            opacity: 1;
-        }
-
-        .footer-bottom {
-            border-top: 1px solid rgba(108, 99, 255, 0.1);
-            padding-top: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .footer-bottom p {
-            color: var(--text-muted);
-            font-size: 0.85rem;
-        }
-
-        .footer-bottom span {
-            color: var(--secondary);
-        }
-
-        /* ===== ANIMATIONS ===== */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .animate-on-scroll {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.7s ease, transform 0.7s ease;
-        }
-
-        .animate-on-scroll.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* ===== BACK TO TOP ===== */
-        .back-to-top {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 50px;
-            height: 50px;
-            background: var(--gradient1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            text-decoration: none;
-            font-size: 1.2rem;
-            z-index: 999;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 20px rgba(108, 99, 255, 0.4);
-        }
-
-        .back-to-top.show {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .back-to-top:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(108, 99, 255, 0.5);
-        }
-
-        /* ===== MOBILE MENU ===== */
-        .mobile-menu {
-            position: fixed;
-            top: 0;
-            right: -100%;
-            width: 80%;
-            max-width: 350px;
-            height: 100%;
-            background: var(--card);
-            z-index: 9000;
-            padding: 80px 40px;
-            transition: right 0.4s ease;
-            border-left: 1px solid rgba(108, 99, 255, 0.2);
-        }
-
-        .mobile-menu.open {
-            right: 0;
-        }
-
-        .mobile-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.7);
-            z-index: 8999;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.4s ease;
-        }
-
-        .mobile-overlay.show {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .mobile-nav-links {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-        }
-
-        .mobile-nav-links a {
-            color: var(--text);
-            text-decoration: none;
-            font-size: 1.2rem;
-            font-weight: 600;
-            transition: color 0.3s ease;
-        }
-
-        .mobile-nav-links a:hover {
-            color: var(--primary);
-        }
-
-        .mobile-close {
-            position: absolute;
-            top: 25px;
-            right: 25px;
-            background: none;
-            border: none;
-            color: var(--text);
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 1024px) {
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .services-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .portfolio-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .portfolio-item.large {
-                grid-column: span 1;
-            }
-
-            .footer-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-
-            .hamburger {
-                display: flex;
-            }
-
-            .about-grid,
-            .contact-wrapper {
-                grid-template-columns: 1fr;
-                gap: 40px;
-            }
-
-            .about-content {
-                padding-left: 0;
-            }
-
-            .testimonials-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .process-timeline::before {
-                left: 25px;
-            }
-
-            .process-item,
-            .process-item:nth-child(even) {
-                flex-direction: column;
-                gap: 20px;
-            }
-
-            .process-number {
-                position: absolute;
-                left: 0;
-            }
-
-            .process-item {
-                padding-left: 70px;
-                position: relative;
-            }
-
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-
-            .portfolio-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .footer-grid {
-                grid-template-columns: 1fr;
-                gap: 30px;
-            }
-
-            .footer-bottom {
-                flex-direction: column;
-                gap: 15px;
-                text-align: center;
-            }
-
-            .hero-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 480px) {
-            .stats-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .services-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* ===== NOTIFICATION ===== */
-        .notification {
-            position: fixed;
-            top: 100px;
-            right: 30px;
-            background: var(--card);
-            border: 1px solid rgba(67, 233, 123, 0.3);
-            border-radius: 15px;
-            padding: 15px 25px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            z-index: 9999;
-            transform: translateX(150%);
-            transition: transform 0.4s ease;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-        }
-
-        .notification.show {
-            transform: translateX(0);
-        }
-
-        .notification-icon {
-            color: var(--accent);
-            font-size: 1.2rem;
-        }
-
-        .notification p {
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-
-        /* ===== GLOW LINES ===== */
-        .glow-line {
-            height: 1px;
-            background: linear-gradient(to right, transparent, var(--primary), transparent);
-            opacity: 0.3;
-            margin: 0;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edologia.biz.id — Creative Portfolio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { inter: ['Inter', 'sans-serif'] },
+        }
+      }
+    }
+  </script>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #020617; color: #f8fafc; overflow-x: hidden; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #020617; }
+    ::-webkit-scrollbar-thumb { background: #06b6d4; border-radius: 3px; }
+
+    /* Glass */
+    .glass { background: rgba(255,255,255,0.03); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.08); }
+    .glass-solid { background: rgba(2,6,23,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.08); }
+
+    /* Gradient Text */
+    .gradient-text {
+      background: linear-gradient(to bottom right, #fff, #e2e8f0, #94a3b8);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .cyan-gradient-text {
+      background: linear-gradient(135deg, #06b6d4, #22d3ee, #67e8f9);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Shimmer */
+    .shimmer { position: relative; overflow: hidden; }
+    .shimmer::after {
+      content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+      animation: shimmer 4s infinite;
+    }
+    @keyframes shimmer { 0%{left:-100%} 100%{left:200%} }
+
+    /* Float */
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-20px)} }
+    .float-1 { animation: float 6s ease-in-out infinite; }
+    .float-2 { animation: float 8s ease-in-out infinite 1s; }
+    .float-3 { animation: float 5s ease-in-out infinite 2s; }
+
+    /* Pulse Glow */
+    @keyframes pulseGlow {
+      0%,100%{ box-shadow: 0 0 20px rgba(6,182,212,0.2); }
+      50%{ box-shadow: 0 0 40px rgba(6,182,212,0.5), 0 0 80px rgba(6,182,212,0.2); }
+    }
+    .pulse-glow { animation: pulseGlow 3s ease-in-out infinite; }
+
+    /* Typing Cursor */
+    .typing-cursor::after {
+      content: '|'; animation: blink 1s infinite; color: #06b6d4; font-weight: 300;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+    /* Scroll Reveal */
+    .reveal { opacity: 0; transform: translateY(60px); transition: all 0.8s cubic-bezier(0.16,1,0.3,1); }
+    .reveal.active { opacity: 1; transform: translateY(0); }
+    .reveal-left { opacity: 0; transform: translateX(-80px); transition: all 0.8s cubic-bezier(0.16,1,0.3,1); }
+    .reveal-left.active { opacity: 1; transform: translateX(0); }
+    .reveal-right { opacity: 0; transform: translateX(80px); transition: all 0.8s cubic-bezier(0.16,1,0.3,1); }
+    .reveal-right.active { opacity: 1; transform: translateX(0); }
+    .reveal-scale { opacity: 0; transform: scale(0.8); transition: all 0.8s cubic-bezier(0.16,1,0.3,1); }
+    .reveal-scale.active { opacity: 1; transform: scale(1); }
+
+    /* Particle Canvas */
+    #particles { position: fixed; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none; }
+
+    /* Card Hover Lift */
+    .card-lift { transition: all 0.5s cubic-bezier(0.16,1,0.3,1); }
+    .card-lift:hover { transform: translateY(-8px); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); }
+
+    /* Progress Bar Animation */
+    .progress-bar { width: 0; transition: width 1.5s cubic-bezier(0.16,1,0.3,1); }
+    .progress-bar.active { /* width set via JS */ }
+
+    /* Magnetic Button */
+    .magnetic-btn {
+      transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
+      position: relative; overflow: hidden;
+    }
+    .magnetic-btn::before {
+      content: ''; position: absolute; top: 50%; left: 50%;
+      width: 0; height: 0; border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      transform: translate(-50%,-50%);
+      transition: width 0.6s, height 0.6s;
+    }
+    .magnetic-btn:hover::before { width: 300px; height: 300px; }
+
+    /* Orbit */
+    @keyframes orbit {
+      0%{ transform: rotate(0deg) translateX(120px) rotate(0deg); }
+      100%{ transform: rotate(360deg) translateX(120px) rotate(-360deg); }
+    }
+    @keyframes orbit2 {
+      0%{ transform: rotate(120deg) translateX(90px) rotate(-120deg); }
+      100%{ transform: rotate(480deg) translateX(90px) rotate(-480deg); }
+    }
+    @keyframes orbit3 {
+      0%{ transform: rotate(240deg) translateX(150px) rotate(-240deg); }
+      100%{ transform: rotate(600deg) translateX(150px) rotate(-600deg); }
+    }
+    .orbit-1 { animation: orbit 12s linear infinite; }
+    .orbit-2 { animation: orbit2 8s linear infinite; }
+    .orbit-3 { animation: orbit3 15s linear infinite; }
+
+    /* Marquee */
+    @keyframes marquee { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+    .marquee { animation: marquee 30s linear infinite; }
+
+    /* Image reveal */
+    .img-reveal { clip-path: inset(0 100% 0 0); transition: clip-path 1.2s cubic-bezier(0.16,1,0.3,1); }
+    .img-reveal.active { clip-path: inset(0 0% 0 0); }
+
+    /* Stagger children */
+    .stagger > * { opacity: 0; transform: translateY(30px); }
+    .stagger.active > *:nth-child(1) { animation: staggerIn 0.6s 0.1s forwards; }
+    .stagger.active > *:nth-child(2) { animation: staggerIn 0.6s 0.2s forwards; }
+    .stagger.active > *:nth-child(3) { animation: staggerIn 0.6s 0.3s forwards; }
+    .stagger.active > *:nth-child(4) { animation: staggerIn 0.6s 0.4s forwards; }
+    .stagger.active > *:nth-child(5) { animation: staggerIn 0.6s 0.5s forwards; }
+    .stagger.active > *:nth-child(6) { animation: staggerIn 0.6s 0.6s forwards; }
+    @keyframes staggerIn { to { opacity:1; transform:translateY(0); } }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 2rem; right: 2rem; z-index: 9999;
+      padding: 1rem 1.5rem; border-radius: 1rem;
+      background: rgba(6,182,212,0.15); border: 1px solid rgba(6,182,212,0.3);
+      backdrop-filter: blur(16px); color: #22d3ee;
+      transform: translateY(100px); opacity: 0;
+      transition: all 0.5s cubic-bezier(0.16,1,0.3,1);
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+
+    /* Nav link underline */
+    .nav-link { position: relative; }
+    .nav-link::after {
+      content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px;
+      background: linear-gradient(90deg, #06b6d4, #22d3ee);
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after { width: 100%; }
+
+    /* Tilt effect */
+    .tilt-card { transition: transform 0.3s ease; transform-style: preserve-3d; }
+  </style>
 </head>
-<body>
+<body class="font-inter">
 
-    <!-- Cursor -->
-    <div class="cursor" id="cursor"></div>
-    <div class="cursor-follower" id="cursorFollower"></div>
+<!-- Particle Canvas -->
+<canvas id="particles"></canvas>
 
-    <!-- Loader -->
-    <div class="loader" id="loader">
-        <div class="loader-content">
-            <div class="loader-logo">EDOLOGIA</div>
-            <p style="color: var(--text-muted); font-size: 0.8rem; margin-top: 8px; letter-spacing: 3px;">CREATIVE STUDIO</p>
-            <div class="loader-bar">
-                <div class="loader-progress"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Particles -->
-    <div id="particles-container"></div>
-
-    <!-- Mobile Overlay -->
-    <div class="mobile-overlay" id="mobileOverlay" onclick="closeMobileMenu()"></div>
-
-    <!-- Mobile Menu -->
-    <div class="mobile-menu" id="mobileMenu">
-        <button class="mobile-close" onclick="closeMobileMenu()">✕</button>
-        <ul class="mobile-nav-links">
-            <li><a href="#home" onclick="closeMobileMenu()">Home</a></li>
-            <li><a href="#about" onclick="closeMobileMenu()">About</a></li>
-            <li><a href="#services" onclick="closeMobileMenu()">Services</a></li>
-            <li><a href="#portfolio" onclick="closeMobileMenu()">Portfolio</a></li>
-            <li><a href="#process" onclick="closeMobileMenu()">Process</a></li>
-            <li><a href="#contact" onclick="closeMobileMenu()">Contact</a></li>
-        </ul>
-    </div>
-
-    <!-- Navbar -->
-    <nav class="navbar" id="navbar">
-        <a href="#home" class="logo">EDOLOGIA</a>
-        <ul class="nav-links">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#services">Services</a></li>
-            <li><a href="#portfolio">Portfolio</a></li>
-            <li><a href="#process">Process</a></li>
-            <li><a href="#contact" class="nav-cta">Hire Me</a></li>
-        </ul>
-        <div class="hamburger" onclick="openMobileMenu()">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section class="hero" id="home">
-        <div class="hero-bg">
-            <div class="hero-orb"></div>
-            <div class="hero-orb"></div>
-            <div class="hero-orb"></div>
-        </div>
-        <div class="floating-shapes">
-            <div class="shape"></div>
-            <div class="shape"></div>
-            <div class="shape"></div>
-            <div class="shape"></div>
-        </div>
-        <div class="hero-content">
-            <div class="hero-badge">
-                <div class="dot"></div>
-                Available for freelance work
-            </div>
-            <h1 class="hero-title">
-                <span class="line1">We Create</span>
-                <span class="gradient-text">
-                    <span class="typed-wrapper" id="typed-text"></span>
-                </span>
-            </h1>
-            <p class="hero-subtitle">
-                Studio kreatif digital yang menghadirkan solusi desain dan teknologi inovatif untuk bisnis Anda. Dari ide hingga karya nyata.
-            </p>
-            <div class="hero-buttons">
-                <a href="#portfolio" class="btn-primary">
-                    <i class="fas fa-eye"></i> Lihat Portfolio
-                </a>
-                <a href="#contact" class="btn-secondary">
-                    <i class="fas fa-paper-plane"></i> Hubungi Kami
-                </a>
-            </div>
-        </div>
-        <div class="hero-scroll">
-            <span class="scroll-text">Scroll</span>
-            <div class="scroll-line"></div>
-        </div>
-    </section>
-
-    <div class="glow-line"></div>
-
-    <!-- Stats Section -->
-    <section class="stats">
-        <div class="stats-grid">
-            <div class="stat-card animate-on-scroll">
-                <div class="stat-number" data-count="150">0</div>
-                <div class="stat-label">Projects Completed</div>
-            </div>
-            <div class="stat-card animate-on-scroll" style="transition-delay: 0.1s">
-                <div class="stat-number" data-count="50">0</div>
-                <div class="stat-label">Happy Clients</div>
-            </div>
-            <div class="stat-card animate-on-scroll" style="transition-delay: 0.2s">
-                <div class="stat-number" data-count="5">0</div>
-                <div class="stat-label">Years Experience</div>
-            </div>
-            <div class="stat-card animate-on-scroll" style="transition-delay: 0.3s">
-                <div class="stat-number" data-count="20">0</div>
-                <div class="stat-label">Awards Received</div>
-            </div>
-        </div>
-    </section>
-
-    <div class="glow-line"></div>
-
-    <!-- About Section -->
-    <section class="about" id="about">
-        <div class="section-header animate-on-scroll">
-            <div class="section-tag">✦ Tentang Kami</div>
-            <h2 class="section-title">Kreativitas Bertemu <span>Teknologi</span></h2>
-            <p class="section-desc">Kami adalah tim yang berdedikasi untuk menciptakan pengalaman digital yang memukau dan berkesan.</p>
-        </div>
-
-        <div class="about-grid">
-            <div class="about-image animate-on-scroll">
-                <div class="about-img-wrapper">
-                    <div class="about-img-bg"></div>
-                    <div class="about-img-inner">
-                        <div class="about-avatar">🎨</div>
-                    </div>
-                    <div class="about-badge-float">
-                        <div class="badge-icon">🏆</div>
-                        <div class="badge-text">
-                            <strong>Award Winner</strong>
-                            <span>Best Design Studio 2024</span>
-                        </div>
-                    </div>
-                    <div class="about-badge-float">
-                        <div class="badge-icon">⭐</div>
-                        <div class="badge-text">
-                            <strong>5.0 Rating</strong>
-                            <span>50+ Reviews</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="about-content animate-on-scroll" style="transition-delay: 0.2s">
-                <div class="section-tag">🚀 Our Story</div>
-                <h3 style="font-size: 1.8rem; font-weight: 800; margin: 15px 0; line-height: 1.3;">Passionate About <br><span style="background: var(--gradient1); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Digital Excellence</span></h3>
-                <p>Edologia adalah studio kreatif digital yang berbasis di Indonesia. Kami menggabungkan keahlian desain yang mendalam dengan pemahaman teknologi terkini untuk menghasilkan karya-karya yang tidak hanya indah secara visual, tetapi juga efektif secara fungsional.</p>
-                <p>Dengan pengalaman lebih dari 5 tahun di industri kreatif digital, kami telah membantu puluhan bisnis dari berbagai skala untuk membangun identitas digital yang kuat dan berkesan.</p>
-
-                <h4 class="skills-title">Keahlian Utama</h4>
-                <div class="skill-item">
-                    <div class="skill-info">
-                        <span class="skill-name">UI/UX Design</span>
-                        <span class="skill-percent">95%</span>
-                    </div>
-                    <div class="skill-bar">
-                        <div class="skill-fill" data-width="95"></div>
-                    </div>
-                </div>
-                <div class="skill-item">
-                    <div class="skill-info">
-                        <span class="skill-name">Web Development</span>
-                        <span class="skill-percent">90%</span>
-                    </div>
-                    <div class="skill-bar">
-                        <div class="skill-fill" data-width="90"></div>
-                    </div>
-                </div>
-                <div class="skill-item">
-                    <div class="skill-info">
-                        <span class="skill-name">Brand Identity</span>
-                        <span class="skill-percent">88%</span>
-                    </div>
-                    <div class="skill-bar">
-                        <div class="skill-fill" data-width="88"></div>
-                    </div>
-                </div>
-                <div class="skill-item">
-                    <div class="skill-info">
-                        <span class="skill-name">Motion Design</span>
-                        <span class="skill-percent">82%</span>
-                    </div>
-                    <div class="skill-bar">
-                        <div class="skill-fill" data-width="82"></div>
-                    </div>
-                </div>
-
-                <a href="#portfolio" class="btn-primary" style="display: inline-flex; align-items: center; gap: 10px; margin-top: 30px;">
-                    Lihat Semua Karya <i class="fas fa-arrow-right"></i>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <div class="glow-line"></div>
-
-    <!-- Services Section -->
-    <section id="services">
-        <div class="section-header animate-on-scroll">
-            <div class="section-tag">✦ Layanan Kami</div>
-            <h2 class="section-title">Apa yang Kami <span>Tawarkan</span></h2>
-            <p class="section-desc">Solusi kreatif komprehensif untuk setiap kebutuhan bisnis digital Anda.</p>
-        </div>
-
-        <div class="services-grid">
-            <div class="service-card animate-on-scroll">
-                <div class="service-icon g1"><i class="fas fa-palette"></i></div>
-                <h3 class="service-title">UI/UX Design</h3>
-                <p class="service-desc">Desain antarmuka yang intuitif dan user-centric untuk meningkatkan pengalaman pengguna secara signifikan.</p>
-                <div class="service-tags">
-                    <span class="service-tag">Figma</span>
-                    <span class="service-tag">Prototyping</span>
-                    <span class="service-tag">Research</span>
-                </div>
-            </div>
-
-            <div class="service-card animate-on-scroll" style="transition-delay: 0.1s">
-                <div class="service-icon g2"><i class="fas fa-code"></i></div>
-                <h3 class="service-title">Web Development</h3>
-                <p class="service-desc">Pengembangan website modern yang responsif, cepat, dan optimal dengan teknologi terkini.</p>
-                <div class="service-tags">
-                    <span class="service-tag">React</span>
-                    <span class="service-tag">Next.js</span>
-                    <span class="service-tag">Node.js</span>
-                </div>
-            </div>
-
-            <div class="service-card animate-on-scroll" style="transition-delay: 0.2s">
-                <div class="service-icon g3"><i class="fas fa-fingerprint"></i></div>
-                <h3 class="service-title">Brand Identity</h3>
-                <p class="service-desc">Membangun identitas merek yang kuat dan konsisten yang mencerminkan nilai-nilai bisnis Anda.</p>
-                <div class="service-tags">
-                    <span class="service-tag">Logo Design</span>
-                    <span class="service-tag">Brand Guide</span>
-                    <span class="service-tag">Visual Identity</span>
-                </div>
-            </div>
-
-            <div class="service-card animate-on-scroll" style="transition-delay: 0.3s">
-                <div class="service-icon g4"><i class="fas fa-film"></i></div>
-                <h3 class="service-title">Motion Design</h3>
-                <p class="service-desc">Animasi dan motion graphics yang memukau untuk konten digital, presentasi, dan marketing.</p>
-                <div class="service-tags">
-                    <span class="service-tag">After Effects</span>
-                    <span class="service-tag">Lottie</span>
-                    <span class="service-tag">3D Motion</span>
-                </div>
-            </div>
-
-            <div class="service-card animate-on-scroll" style="transition-delay: 0.4s">
-                <div class="service-icon g5"><i class="fas fa-mobile-alt"></i></div>
-                <h3 class="service-title">Mobile App Design</h3>
-                <p class="service-desc">Desain aplikasi mobile yang elegan dan fungsional untuk platform iOS dan Android.</p>
-                <div class="service-tags">
-                    <span class="service-tag">iOS</span>
-                    <span class="service-tag">Android</span>
-                    <span class="service-tag">Flutter UI</span>
-                </div>
-            </div>
-
-            <div class="service-card animate-on-scroll" style="transition-delay: 0.5s">
-                <div class="service-icon g6"><i class="fas fa-bullhorn"></i></div>
-                <h3 class="service-title">Digital Marketing</h3>
-                <p class="service-desc">Strategi pemasaran digital yang terukur untuk meningkatkan visibilitas dan konversi bisnis Anda.</p>
-                <div class="service-tags">
-                    <span class="service-tag">SEO</span>
-                    <span class="service-tag">Social Media</span>
-                    <span class="service-tag">Content</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <div class="glow-line"></div>
-
-    <!-- Portfolio Section -->
-    <section class="portfolio" id="portfolio">
-        <div class="section-header animate-on-scroll">
-            <div class="section-tag">✦ Portfolio</div>
-            <h2 class="section-title">Karya <span>Terbaik Kami</span></h2>
-            <p class="section-desc">Koleksi proyek-proyek yang menunjukkan kemampuan dan kreativitas kami.</p>
-        </div>
-
-        <div class="portfolio-filter animate-on-scroll">
-            <button class="filter-btn active" onclick="filterPortfolio('all', this)">All Work</button>
-            <button class="filter-btn" onclick="filterPortfolio('web', this)">Web Design</button>
-            <button class="filter-btn" onclick="filterPortfolio('mobile', this)">Mobile App</button>
-            <button class="filter-btn" onclick="filterPortfolio('brand', this)">Branding</button>
-            <button class="filter-btn" onclick="filterPortfolio('motion', this)">Motion</button>
-        </div>
-
-        <div class="portfolio-grid" id="portfolioGrid">
-            <div class="portfolio-item large animate-on-scroll" data-category="web">
-                <div class="portfolio-img p1">🌐</div>
-                <div class="portfolio-overlay">
-                    <h3>E-Commerce Platform</h3>
-                    <p>Full-stack web application dengan UI/UX modern</p>
-                    <div class="portfolio-links">
-                        <a href="#" class="portfolio-link"><i class="fas fa-eye"></i></a>
-                        <a href="#" class="portfolio-link"><i class="fab fa-github"></i></a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="portfolio-item animate-on-scroll" data-category="mobile" style="transition-delay: 0.1s">
-                <div class="portfolio-img p2">📱</div>
-                <div class="portfolio-overlay">
-                    <h3>Health Tracker App</h3>
-                    <p>Mobile app design for iOS & Android</p>
-                    <div class="portfolio-links">
-                        <a href="#" class="portfolio-link"><i class="fas fa-eye"></i></a>
-                        <a href="#" class="portfolio-link"><i class="fas fa-link"></i></a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="portfolio-item animate-on-scroll" data-category="brand" style="transition-delay: 0.2s">
-                <div class="portfolio-img p3">🎯</div>
-                <div class="portfolio-overlay">
-                    <h3>TechStart Branding</h3>
-                    <p>Complete brand identity system</p>
-                    <div class="portfolio-links">
-                        <a href="#" class="portfolio-link"><i class="fas fa-eye"></i></a>
-                        <a href="#" class="portfolio-link"><i class="fas fa-link"></i></a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="portfolio-item animate-on-scroll" data-category="web" style="transition-delay: 0.3s">
-                <div class="portfolio-img p4">💻</div>
-                <div class="portfolio-overlay">
-                    <h3>SaaS Dashboard</h3>
-                    <p>Data analytics platform UI design</p>
-                    <div class="portfolio-links">
-                        <a href="#" class="portfolio-link"><i class="fas fa-eye"></i></a>
-                        <a href="#" class="portfolio-link"><i class="fas fa-link"></i></a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="portfolio-item large animate-on-scroll" data-category="motion" style="transition-delay: 0.4s">
-                <div class="portfolio-img p5">🎬</div>
-                <div class="portfolio-overlay">
-                    <h3>Brand Animation Package</h3>
-                    <p>Motion graphics & animated logo collection</p>
-                    <div class="portfolio-links">
-                        <a href="#" class="portfolio-link"><i class="fas fa-eye"></i></a>
-                        <a href="#" class="portfolio-link"><i class="fas fa-play"></i></a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="portfolio-item animate-on-scroll" data-category="mobile" style="transition-delay: 0.5s">
-                <div class="portfolio-img p6">🛒</div>
-                <div class="portfolio-overlay">
-                    <h3>Shopping App UI</h3>
-                    <p>Modern e-commerce mobile experience</p>
-                    <div class="portfolio-links">
-                        <a href="#" class="portfolio-link"><i class="fas fa-eye"></i></a>
-                        <a href="#" class="portfolio-link"><i class="fas fa-link"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <div class="glow-line"></div>
-
-    <!-- Testimonials -->
-    <section id="testimonials">
-        <div class="section-header animate-on-scroll">
-            <div class="section-tag">✦ Testimonial</div>
-            <h2 class="section-title">Kata Klien <span>Kami</span></h2>
-            <p class="section-desc">Kepuasan klien adalah prioritas utama kami dalam setiap proyek.</p>
-        </div>
-
-        <div class="testimonials-grid">
-            <div class="testimonial-card animate-on-scroll">
-                <span class="quote-icon">"</span>
-                <p class="testimonial-text">Edologia berhasil mentransformasi visi kami menjadi website yang luar biasa. Tim mereka sangat profesional dan responsif. Hasil kerjanya melebihi ekspektasi kami!</p>
-                <div class="testimonial-author">
-                    <div class="author-avatar a1">👨‍💼</div>
-                    <div class="author-info">
-                        <strong>Ahmad Fauzi</strong>
-                        <span>CEO, TechVenture ID</span>
-                        <div class="stars">★★★★★</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="testimonial-card animate-on-scroll" style="transition-delay: 0.1s">
-                <span class="quote-icon">"</span>
-                <p class="testimonial-text">Brand identity yang dibuat Edologia sangat mencerminkan nilai bisnis kami. Desainnya modern, elegan, dan berkesan. Sangat recommended!</p>
-                <div class="testimonial-author">
-                    <div class="author-avatar a2">👩‍💼</div>
-                    <div class="author-info">
-                        <strong>Sarah Putri</strong>
-                        <span>Founder, Bloom Cosmetics</span>
-                        <div class="stars">★★★★★</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="testimonial-card animate-on-scroll" style="transition-delay: 0.2s">
-                <span class="quote-icon">"</span>
-                <p class="testimonial-text">Kerja sama yang sangat menyenangkan. Edologia tidak hanya membuat desain yang indah, tapi juga memahami tujuan bisnis kami dengan sangat baik.</p>
-                <div class="testimonial-author">
-                    <div class="author-avatar a3">👨‍🎨</div>
-                    <div class="author-info">
-                        <strong>Budi Santoso</strong>
-                        <span>CTO, StartupBuild</span>
-                        <div class="stars">★★★★★</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <div class="glow-line"></div>
-
-    <!-- Process Section -->
-    <section class="process" id="process">
-        <div class="section-header animate-on-scroll">
-            <div class="section-tag">✦ Cara Kerja</div>
-            <h2 class="section-title">Proses <span>Kreatif Kami</span></h2>
-            <p class="section-desc">Kami mengikuti proses yang terstruktur untuk memastikan hasil terbaik di setiap proyek.</p>
-        </div>
-
-        <div class="process-timeline">
-            <div class="process-item animate-on-scroll">
-                <div class="process-content">
-                    <h3>🔍 Discovery & Research</h3>
-                    <p>Kami mulai dengan memahami bisnis, target audiens, dan tujuan proyek Anda secara mendalam melalui diskusi dan riset komprehensif.</p>
-                </div>
-                <div class="process-number">01</div>
-            </div>
-
-            <div class="process-item animate-on-scroll">
-                <div class="process-number">02</div>
-                <div class="process-content">
-                    <h3>✏️ Strategy & Planning</h3>
-                    <p>Berdasarkan hasil riset, kami menyusun strategi kreatif dan rencana proyek yang detail termasuk timeline dan milestone yang jelas.</p>
-                </div>
-            </div>
-
-            <div class="process-item animate-on-scroll">
-                <div class="process-content">
-                    <h3>🎨 Design & Prototype</h3>
-                    <p>Tim desainer kami menciptakan konsep visual yang kuat, kemudian mengembangkannya menjadi prototype interaktif untuk review.</p>
-                </div>
-                <div class="process-number">03</div>
-            </div>
-
-            <div class="process-item animate-on-scroll">
-                <div class="process-number">04</div>
-                <div class="process-content">
-                    <h3>⚡ Development & Testing</h3>
-                    <p>Pengembangan dilakukan dengan standar kode tertinggi, diikuti pengujian menyeluruh untuk memastikan performa dan kualitas optimal.</p>
-                </div>
-            </div>
-
-            <div class="process-item animate-on-scroll">
-                <div class="process-content">
-                    <h3>🚀 Launch & Support</h3>
-                    <p>Setelah semua selesai dan disetujui, kami melakukan launching dan memberikan dukungan purna jual yang komprehensif.</p>
-                </div>
-                <div class="process-number">05</div>
-            </div>
-        </div>
-    </section>
-
-    <div class="glow-line"></div>
-
-    <!-- Contact Section -->
-    <section id="contact">
-        <div class="section-header animate-on-scroll">
-            <div class="section-tag">✦ Kontak</div>
-            <h2 class="section-title">Mari <span>Berkolaborasi</span></h2>
-            <p class="section-desc">Punya proyek menarik? Kami siap membantu mewujudkan ide Anda menjadi kenyataan.</p>
-        </div>
-
-        <div class="contact-wrapper">
-            <div class="contact-info animate-on-scroll">
-                <h3>Hubungi Kami</h3>
-                <p>Kami senang mendengar tentang proyek Anda. Kirimkan pesan dan kami akan merespons dalam 24 jam kerja.</p>
-
-                <div class="contact-items">
-                    <div class="contact-item">
-                        <div class="contact-icon"><i class="fas fa-envelope"></i></div>
-                        <div class="contact-item-text">
-                            <strong>Email</strong>
-                            <span>hello@edologia.biz.id</span>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon"><i class="fas fa-phone"></i></div>
-                        <div class="contact-item-text">
-                            <strong>Telepon</strong>
-                            <span>+62 812-3456-7890</span>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
-                        <div class="contact-item-text">
-                            <strong>Lokasi</strong>
-                            <span>Jakarta, Indonesia</span>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon"><i class="fas fa-clock"></i></div>
-                        <div class="contact-item-text">
-                            <strong>Jam Kerja</strong>
-                            <span>Senin - Jumat, 09:00 - 18:00 WIB</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="social-links">
-                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-dribbble"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-behance"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
-                </div>
-            </div>
-
-            <div class="contact-form animate-on-scroll" style="transition-delay: 0.2s">
-                <form onsubmit="submitForm(event)">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">Nama</label>
-                            <input type="text" class="form-input" placeholder="Nama Anda" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Email</label>
-                            <input type="email" class="form-input" placeholder="email@anda.com" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Subjek</label>
-                        <input type="text" class="form-input" placeholder="Topik pesan Anda" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Layanan yang Dibutuhkan</label>
-                        <select class="form-input">
-                            <option value="" style="background: var(--dark);">Pilih layanan...</option>
-                            <option style="background: var(--dark);">UI/UX Design</option>
-                            <option style="background: var(--dark);">Web Development</option>
-                            <option style="background: var(--dark);">Brand Identity</option>
-                            <option style="background: var(--dark);">Motion Design</option>
-                            <option style="background: var(--dark);">Mobile App Design</option>
-                            <option style="background: var(--dark);">Digital Marketing</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Pesan</label>
-                        <textarea class="form-input" placeholder="Ceritakan tentang proyek Anda..." required></textarea>
-                    </div>
-                    <button type="submit" class="submit-btn">
-                        <i class="fas fa-paper-plane"></i> Kirim Pesan
-                    </button>
-                </form>
-            </div>
-        </div>
-    </section>
-
-    <div class="glow-line"></div>
-
-    <!-- Footer -->
-    <footer>
-        <div class="footer-grid">
-            <div class="footer-brand">
-                <a href="#home" class="logo">EDOLOGIA</a>
-                <p>Studio kreatif digital yang menghadirkan solusi desain dan teknologi inovatif untuk bisnis Anda. Dari konsep hingga karya nyata yang memukau.</p>
-                <div class="social-links">
-                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-dribbble"></i></a>
-                </div>
-            </div>
-
-            <div class="footer-col">
-                <h4>Layanan</h4>
-                <ul class="footer-links">
-                    <li><a href="#services">UI/UX Design</a></li>
-                    <li><a href="#services">Web Development</a></li>
-                    <li><a href="#services">Brand Identity</a></li>
-                    <li><a href="#services">Motion Design</a></li>
-                    <li><a href="#services">Mobile App</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-col">
-                <h4>Studio</h4>
-                <ul class="footer-links">
-                    <li><a href="#about">Tentang Kami</a></li>
-                    <li><a href="#portfolio">Portfolio</a></li>
-                    <li><a href="#process">Cara Kerja</a></li>
-                    <li><a href="#testimonials">Testimonial</a></li>
-                    <li><a href="#contact">Karir</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-col">
-                <h4>Kontak</h4>
-                <ul class="footer-links">
-                    <li><a href="mailto:hello@edologia.biz.id">hello@edologia.biz.id</a></li>
-                    <li><a href="tel:+6281234567890">+62 812-3456-7890</a></li>
-                    <li><a href="#">Jakarta, Indonesia</a></li>
-                    <li><a href="#">edologia.biz.id</a></li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="footer-bottom">
-            <p>© 2024 <span>Edologia.biz.id</span> — All Rights Reserved</p>
-            <p>Made with <span>❤</span> in Indonesia</p>
-        </div>
-    </footer>
-
-    <!-- Back to Top -->
-    <a href="#home" class="back-to-top" id="backToTop">
-        <i class="fas fa-arrow-up"></i>
+<!-- ===== NAVBAR ===== -->
+<nav id="navbar" class="fixed top-0 left-0 w-full z-50 transition-all duration-500 py-4 px-6">
+  <div class="max-w-7xl mx-auto flex items-center justify-between">
+    <!-- Logo -->
+    <a href="#hero" class="flex items-center gap-2 group">
+      <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-cyan-500 to-cyan-400 flex items-center justify-center text-white font-bold text-sm group-hover:shadow-[0_0_20px_rgba(6,182,212,0.5)] transition-shadow duration-300">
+        E
+      </div>
+      <span class="text-white font-semibold text-lg tracking-tight">edologia<span class="text-cyan-400">.biz.id</span></span>
     </a>
+    <!-- Desktop Menu -->
+    <div class="hidden md:flex items-center gap-8">
+      <a href="#about" class="nav-link text-sm font-medium text-slate-400 hover:text-white transition-colors duration-150">Tentang</a>
+      <a href="#services" class="nav-link text-sm font-medium text-slate-400 hover:text-white transition-colors duration-150">Layanan</a>
+      <a href="#portfolio" class="nav-link text-sm font-medium text-slate-400 hover:text-white transition-colors duration-150">Portofolio</a>
+      <a href="#skills" class="nav-link text-sm font-medium text-slate-400 hover:text-white transition-colors duration-150">Keahlian</a>
+      <a href="#testimonials" class="nav-link text-sm font-medium text-slate-400 hover:text-white transition-colors duration-150">Testimoni</a>
+      <a href="#contact" class="magnetic-btn px-5 py-2 rounded-full bg-cyan-500 text-white text-sm font-medium hover:bg-cyan-400 transition-colors duration-300">
+        Hubungi Kami
+      </a>
+    </div>
+    <!-- Mobile Toggle -->
+    <button id="menuToggle" class="md:hidden text-white p-2">
+      <span class="iconify" data-icon="lucide:menu" data-width="24"></span>
+    </button>
+  </div>
+  <!-- Mobile Menu -->
+  <div id="mobileMenu" class="md:hidden hidden mt-4 glass rounded-2xl p-6 space-y-4">
+    <a href="#about" class="block text-sm text-slate-400 hover:text-white transition-colors">Tentang</a>
+    <a href="#services" class="block text-sm text-slate-400 hover:text-white transition-colors">Layanan</a>
+    <a href="#portfolio" class="block text-sm text-slate-400 hover:text-white transition-colors">Portofolio</a>
+    <a href="#skills" class="block text-sm text-slate-400 hover:text-white transition-colors">Keahlian</a>
+    <a href="#testimonials" class="block text-sm text-slate-400 hover:text-white transition-colors">Testimoni</a>
+    <a href="#contact" class="block text-center px-5 py-2 rounded-full bg-cyan-500 text-white text-sm font-medium">Hubungi Kami</a>
+  </div>
+</nav>
 
-    <!-- Notification -->
-    <div class="notification" id="notification">
-        <div class="notification-icon"><i class="fas fa-check-circle"></i></div>
-        <p>Pesan berhasil terkirim! 🎉</p>
+<!-- ===== HERO ===== -->
+<section id="hero" class="relative min-h-screen flex items-center justify-center px-6 pt-20 overflow-hidden">
+  <!-- Glow orbs -->
+  <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl float-1"></div>
+  <div class="absolute bottom-1/4 right-1/4 w-72 h-72 bg-cyan-400/5 rounded-full blur-3xl float-2"></div>
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full border border-white/5 float-3"></div>
+
+  <!-- Orbiting elements -->
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-0 h-0 hidden lg:block">
+    <div class="orbit-1"><div class="w-3 h-3 rounded-full bg-cyan-400/40"></div></div>
+    <div class="orbit-2"><div class="w-2 h-2 rounded-full bg-cyan-300/30"></div></div>
+    <div class="orbit-3"><div class="w-2 h-2 rounded-full bg-white/20"></div></div>
+  </div>
+
+  <div class="relative z-10 text-center max-w-4xl mx-auto">
+    <!-- Badge -->
+    <div class="reveal inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-8">
+      <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+      <span class="text-xs font-medium text-cyan-300 tracking-wide uppercase">Tersedia untuk Proyek Baru</span>
     </div>
 
-    <script>
-        // ===== LOADER =====
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                document.getElementById('loader').classList.add('hidden');
-            }, 2200);
-        });
+    <!-- Heading -->
+    <h1 class="reveal text-4xl md:text-7xl lg:text-8xl font-semibold tracking-tight leading-[1.05] mb-6">
+      <span class="gradient-text">Kami Membangun</span><br>
+      <span class="cyan-gradient-text" id="typingText"></span><span class="typing-cursor"></span>
+    </h1>
 
-        // ===== CURSOR =====
-        const cursor = document.getElementById('cursor');
-        const cursorFollower = document.getElementById('cursorFollower');
-        let mouseX = 0, mouseY = 0;
-        let followerX = 0, followerY = 0;
+    <!-- Subheading -->
+    <p class="reveal text-slate-400 text-lg md:text-xl font-light leading-relaxed max-w-2xl mx-auto mb-10">
+      Studio kreatif yang menghadirkan solusi digital inovatif — dari desain hingga pengembangan, kami mengubah ide Anda menjadi pengalaman digital yang memukau.
+    </p>
 
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-            cursor.style.left = mouseX - 10 + 'px';
-            cursor.style.top = mouseY - 10 + 'px';
-        });
+    <!-- CTA Buttons -->
+    <div class="reveal flex flex-col sm:flex-row items-center justify-center gap-4">
+      <a href="#portfolio" class="magnetic-btn group px-8 py-3.5 rounded-full bg-white text-black text-sm font-semibold flex items-center gap-2 hover:shadow-[0_0_40px_rgba(255,255,255,0.2)] transition-all duration-300">
+        Lihat Karya
+        <span class="iconify group-hover:translate-x-1 transition-transform duration-300" data-icon="lucide:arrow-right" data-width="16"></span>
+      </a>
+      <a href="#contact" class="magnetic-btn px-8 py-3.5 rounded-full glass text-white text-sm font-medium hover:bg-white/10 transition-all duration-300">
+        Mulai Proyek
+      </a>
+    </div>
 
-        function animateCursor() {
-            followerX += (mouseX - followerX - 20) * 0.1;
-            followerY += (mouseY - followerY - 20) * 0.1;
-            cursorFollower.style.left = followerX + 'px';
-            cursorFollower.style.top = followerY + 'px';
-            requestAnimationFrame(animateCursor);
+    <!-- Scroll indicator -->
+    <div class="reveal absolute -bottom-20 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
+      <span class="text-[10px] text-slate-500 uppercase tracking-widest">Scroll</span>
+      <div class="w-5 h-8 rounded-full border border-white/20 flex items-start justify-center p-1">
+        <div class="w-1 h-2 rounded-full bg-cyan-400 animate-bounce"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MARQUEE ===== -->
+<section class="relative z-10 py-12 border-y border-white/5 overflow-hidden">
+  <div class="marquee flex items-center gap-12 whitespace-nowrap">
+    <span class="text-2xl font-semibold text-white/5">DESAIN UI/UX</span>
+    <span class="text-cyan-500/30">◆</span>
+    <span class="text-2xl font-semibold text-white/5">WEB DEVELOPMENT</span>
+    <span class="text-cyan-500/30">◆</span>
+    <span class="text-2xl font-semibold text-white/5">BRANDING</span>
+    <span class="text-cyan-500/30">◆</span>
+    <span class="text-2xl font-semibold text-white/5">MOBILE APP</span>
+    <span class="text-cyan-500/30">◆</span>
+    <span class="text-2xl font-semibold text-white/5">MOTION DESIGN</span>
+    <span class="text-cyan-500/30">◆</span>
+    <span class="text-2xl font-semibold text-white/5">SEO OPTIMIZATION</span>
+    <span class="text-cyan-500/30">◆</span>
+    <span class="text-2xl font-semibold text-white/5">DESAIN UI/UX</span>
+    <span class="text-cyan-500/30">◆</span>
+    <span class="text-2xl font-semibold text-white/5">WEB DEVELOPMENT</span>
+    <span class="text-cyan-500/30">◆</span>
+    <span class="text-2xl font-semibold text-white/5">BRANDING</span>
+    <span class="text-cyan-500/30">◆</span>
+    <span class="text-2xl font-semibold text-white/5">MOBILE APP</span>
+    <span class="text-cyan-500/30">◆</span>
+    <span class="text-2xl font-semibold text-white/5">MOTION DESIGN</span>
+    <span class="text-cyan-500/30">◆</span>
+    <span class="text-2xl font-semibold text-white/5">SEO OPTIMIZATION</span>
+    <span class="text-cyan-500/30">◆</span>
+  </div>
+</section>
+
+<!-- ===== ABOUT ===== -->
+<section id="about" class="relative z-10 py-24 px-6">
+  <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+    <!-- Image -->
+    <div class="reveal-left relative">
+      <div class="relative rounded-3xl overflow-hidden aspect-[4/3]">
+        <img src="https://picsum.photos/seed/edologia-team/800/600.jpg" alt="Team" class="w-full h-full object-cover img-reveal">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+      </div>
+      <!-- Floating badge -->
+      <div class="absolute -bottom-6 -right-6 glass rounded-2xl p-4 float-1">
+        <div class="text-3xl font-bold cyan-gradient-text">5+</div>
+        <div class="text-xs text-slate-400">Tahun Pengalaman</div>
+      </div>
+      <!-- Decorative -->
+      <div class="absolute -top-4 -left-4 w-24 h-24 border border-cyan-500/20 rounded-2xl"></div>
+    </div>
+
+    <!-- Content -->
+    <div class="reveal-right">
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass mb-6">
+        <span class="iconify text-cyan-400" data-icon="lucide:info" data-width="14"></span>
+        <span class="text-xs font-medium text-cyan-300 tracking-wide uppercase">Tentang Kami</span>
+      </div>
+      <h2 class="text-3xl md:text-5xl font-semibold tracking-tight gradient-text mb-6">
+        Mengubah Visi Menjadi Realitas Digital
+      </h2>
+      <p class="text-slate-400 font-light leading-relaxed mb-6">
+        <strong class="text-white font-medium">Edologia</strong> adalah studio kreatif yang berdedikasi untuk menciptakan pengalaman digital yang luar biasa. Kami menggabungkan desain yang memukau dengan teknologi terdepan untuk menghasilkan solusi yang berdampak.
+      </p>
+      <p class="text-slate-400 font-light leading-relaxed mb-8">
+        Dengan tim yang terdiri dari desainer, developer, dan strategis berpengalaman, kami telah membantu puluhan bisnis mencapai tujuan digital mereka.
+      </p>
+      <!-- Stats -->
+      <div class="grid grid-cols-3 gap-6">
+        <div>
+          <div class="text-2xl md:text-3xl font-bold text-white counter" data-target="50">0</div>
+          <div class="text-xs text-slate-500 mt-1">Proyek Selesai</div>
+        </div>
+        <div>
+          <div class="text-2xl md:text-3xl font-bold text-white counter" data-target="35">0</div>
+          <div class="text-xs text-slate-500 mt-1">Klien Puas</div>
+        </div>
+        <div>
+          <div class="text-2xl md:text-3xl font-bold text-white counter" data-target="12">0</div>
+          <div class="text-xs text-slate-500 mt-1">Penghargaan</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SERVICES ===== -->
+<section id="services" class="relative z-10 py-24 px-6">
+  <div class="max-w-7xl mx-auto">
+    <!-- Header -->
+    <div class="reveal text-center max-w-2xl mx-auto mb-16">
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass mb-6">
+        <span class="iconify text-cyan-400" data-icon="lucide:layers" data-width="14"></span>
+        <span class="text-xs font-medium text-cyan-300 tracking-wide uppercase">Layanan</span>
+      </div>
+      <h2 class="text-3xl md:text-5xl font-semibold tracking-tight gradient-text mb-4">
+        Apa yang Kami Tawarkan
+      </h2>
+      <p class="text-slate-400 font-light leading-relaxed">
+        Solusi lengkap untuk kebutuhan digital Anda, dari konsep hingga peluncuran.
+      </p>
+    </div>
+
+    <!-- Cards -->
+    <div class="stagger grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Card 1 -->
+      <div class="card-lift glass rounded-2xl p-8 group cursor-pointer shimmer">
+        <div class="w-14 h-14 rounded-xl bg-cyan-500/10 flex items-center justify-center mb-6 group-hover:bg-cyan-500/20 transition-colors duration-300">
+          <span class="iconify text-cyan-400" data-icon="lucide:palette" data-width="28"></span>
+        </div>
+        <h3 class="text-xl font-medium text-white mb-3">UI/UX Design</h3>
+        <p class="text-slate-400 font-light text-sm leading-relaxed mb-4">
+          Desain antarmuka yang intuitif dan pengalaman pengguna yang menyenangkan, berbasis riset dan data.
+        </p>
+        <div class="flex items-center gap-2 text-cyan-400 text-sm font-medium group-hover:gap-3 transition-all duration-300">
+          <span>Pelajari</span>
+          <span class="iconify" data-icon="lucide:arrow-right" data-width="14"></span>
+        </div>
+      </div>
+      <!-- Card 2 -->
+      <div class="card-lift glass rounded-2xl p-8 group cursor-pointer shimmer">
+        <div class="w-14 h-14 rounded-xl bg-cyan-500/10 flex items-center justify-center mb-6 group-hover:bg-cyan-500/20 transition-colors duration-300">
+          <span class="iconify text-cyan-400" data-icon="lucide:code-2" data-width="28"></span>
+        </div>
+        <h3 class="text-xl font-medium text-white mb-3">Web Development</h3>
+        <p class="text-slate-400 font-light text-sm leading-relaxed mb-4">
+          Pengembangan website modern, responsif, dan cepat dengan teknologi terkini seperti React, Next.js, dan Tailwind.
+        </p>
+        <div class="flex items-center gap-2 text-cyan-400 text-sm font-medium group-hover:gap-3 transition-all duration-300">
+          <span>Pelajari</span>
+          <span class="iconify" data-icon="lucide:arrow-right" data-width="14"></span>
+        </div>
+      </div>
+      <!-- Card 3 -->
+      <div class="card-lift glass rounded-2xl p-8 group cursor-pointer shimmer">
+        <div class="w-14 h-14 rounded-xl bg-cyan-500/10 flex items-center justify-center mb-6 group-hover:bg-cyan-500/20 transition-colors duration-300">
+          <span class="iconify text-cyan-400" data-icon="lucide:smartphone" data-width="28"></span>
+        </div>
+        <h3 class="text-xl font-medium text-white mb-3">Mobile App</h3>
+        <p class="text-slate-400 font-light text-sm leading-relaxed mb-4">
+          Aplikasi mobile cross-platform yang elegan dan berperforma tinggi untuk iOS dan Android.
+        </p>
+        <div class="flex items-center gap-2 text-cyan-400 text-sm font-medium group-hover:gap-3 transition-all duration-300">
+          <span>Pelajari</span>
+          <span class="iconify" data-icon="lucide:arrow-right" data-width="14"></span>
+        </div>
+      </div>
+      <!-- Card 4 -->
+      <div class="card-lift glass rounded-2xl p-8 group cursor-pointer shimmer">
+        <div class="w-14 h-14 rounded-xl bg-cyan-500/10 flex items-center justify-center mb-6 group-hover:bg-cyan-500/20 transition-colors duration-300">
+          <span class="iconify text-cyan-400" data-icon="lucide:pen-tool" data-width="28"></span>
+        </div>
+        <h3 class="text-xl font-medium text-white mb-3">Branding</h3>
+        <p class="text-slate-400 font-light text-sm leading-relaxed mb-4">
+          Identitas visual yang kuat dan konsisten untuk membangun citra brand Anda di dunia digital.
+        </p>
+        <div class="flex items-center gap-2 text-cyan-400 text-sm font-medium group-hover:gap-3 transition-all duration-300">
+          <span>Pelajari</span>
+          <span class="iconify" data-icon="lucide:arrow-right" data-width="14"></span>
+        </div>
+      </div>
+      <!-- Card 5 -->
+      <div class="card-lift glass rounded-2xl p-8 group cursor-pointer shimmer">
+        <div class="w-14 h-14 rounded-xl bg-cyan-500/10 flex items-center justify-center mb-6 group-hover:bg-cyan-500/20 transition-colors duration-300">
+          <span class="iconify text-cyan-400" data-icon="lucide:play-circle" data-width="28"></span>
+        </div>
+        <h3 class="text-xl font-medium text-white mb-3">Motion Design</h3>
+        <p class="text-slate-400 font-light text-sm leading-relaxed mb-4">
+          Animasi dan motion graphics yang memukau untuk website, presentasi, dan konten media sosial.
+        </p>
+        <div class="flex items-center gap-2 text-cyan-400 text-sm font-medium group-hover:gap-3 transition-all duration-300">
+          <span>Pelajari</span>
+          <span class="iconify" data-icon="lucide:arrow-right" data-width="14"></span>
+        </div>
+      </div>
+      <!-- Card 6 -->
+      <div class="card-lift glass rounded-2xl p-8 group cursor-pointer shimmer">
+        <div class="w-14 h-14 rounded-xl bg-cyan-500/10 flex items-center justify-center mb-6 group-hover:bg-cyan-500/20 transition-colors duration-300">
+          <span class="iconify text-cyan-400" data-icon="lucide:search" data-width="28"></span>
+        </div>
+        <h3 class="text-xl font-medium text-white mb-3">SEO & Strategy</h3>
+        <p class="text-slate-400 font-light text-sm leading-relaxed mb-4">
+          Strategi digital yang terukur dan optimasi mesin pencari untuk meningkatkan visibilitas Anda.
+        </p>
+        <div class="flex items-center gap-2 text-cyan-400 text-sm font-medium group-hover:gap-3 transition-all duration-300">
+          <span>Pelajari</span>
+          <span class="iconify" data-icon="lucide:arrow-right" data-width="14"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PORTFOLIO ===== -->
+<section id="portfolio" class="relative z-10 py-24 px-6">
+  <div class="max-w-7xl mx-auto">
+    <!-- Header -->
+    <div class="reveal text-center max-w-2xl mx-auto mb-16">
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass mb-6">
+        <span class="iconify text-cyan-400" data-icon="lucide:briefcase" data-width="14"></span>
+        <span class="text-xs font-medium text-cyan-300 tracking-wide uppercase">Portofolio</span>
+      </div>
+      <h2 class="text-3xl md:text-5xl font-semibold tracking-tight gradient-text mb-4">
+        Karya Terbaik Kami
+      </h2>
+      <p class="text-slate-400 font-light leading-relaxed">
+        Setiap proyek adalah cerminan dedikasi dan passion kami terhadap kualitas.
+      </p>
+    </div>
+
+    <!-- Filter tabs -->
+    <div class="reveal flex flex-wrap justify-center gap-3 mb-12">
+      <button class="filter-btn active px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 bg-cyan-500 text-white" data-filter="all">Semua</button>
+      <button class="filter-btn px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 glass text-slate-400 hover:text-white" data-filter="web">Web</button>
+      <button class="filter-btn px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 glass text-slate-400 hover:text-white" data-filter="mobile">Mobile</button>
+      <button class="filter-btn px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 glass text-slate-400 hover:text-white" data-filter="branding">Branding</button>
+    </div>
+
+    <!-- Portfolio Grid -->
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="portfolioGrid">
+      <!-- Item 1 -->
+      <div class="portfolio-item card-lift rounded-2xl overflow-hidden group cursor-pointer" data-category="web">
+        <div class="relative aspect-[4/3] overflow-hidden">
+          <img src="https://picsum.photos/seed/edologia-web1/600/450.jpg" alt="Project" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-6">
+            <div>
+              <h4 class="text-white font-medium text-lg">E-Commerce Platform</h4>
+              <p class="text-cyan-300 text-sm">Web Development</p>
+            </div>
+          </div>
+          <div class="absolute top-4 right-4 w-10 h-10 rounded-full glass flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-4 group-hover:translate-y-0">
+            <span class="iconify text-white" data-icon="lucide:external-link" data-width="16"></span>
+          </div>
+        </div>
+      </div>
+      <!-- Item 2 -->
+      <div class="portfolio-item card-lift rounded-2xl overflow-hidden group cursor-pointer" data-category="mobile">
+        <div class="relative aspect-[4/3] overflow-hidden">
+          <img src="https://picsum.photos/seed/edologia-mobile1/600/450.jpg" alt="Project" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-6">
+            <div>
+              <h4 class="text-white font-medium text-lg">Fitness Tracker App</h4>
+              <p class="text-cyan-300 text-sm">Mobile App</p>
+            </div>
+          </div>
+          <div class="absolute top-4 right-4 w-10 h-10 rounded-full glass flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-4 group-hover:translate-y-0">
+            <span class="iconify text-white" data-icon="lucide:external-link" data-width="16"></span>
+          </div>
+        </div>
+      </div>
+      <!-- Item 3 -->
+      <div class="portfolio-item card-lift rounded-2xl overflow-hidden group cursor-pointer" data-category="branding">
+        <div class="relative aspect-[4/3] overflow-hidden">
+          <img src="https://picsum.photos/seed/edologia-brand1/600/450.jpg" alt="Project" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-6">
+            <div>
+              <h4 class="text-white font-medium text-lg">Luxury Brand Identity</h4>
+              <p class="text-cyan-300 text-sm">Branding</p>
+            </div>
+          </div>
+          <div class="absolute top-4 right-4 w-10 h-10 rounded-full glass flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-4 group-hover:translate-y-0">
+            <span class="iconify text-white" data-icon="lucide:external-link" data-width="16"></span>
+          </div>
+        </div>
+      </div>
+      <!-- Item 4 -->
+      <div class="portfolio-item card-lift rounded-2xl overflow-hidden group cursor-pointer" data-category="web">
+        <div class="relative aspect-[4/3] overflow-hidden">
+          <img src="https://picsum.photos/seed/edologia-web2/600/450.jpg" alt="Project" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-6">
+            <div>
+              <h4 class="text-white font-medium text-lg">SaaS Dashboard</h4>
+              <p class="text-cyan-300 text-sm">Web Development</p>
+            </div>
+          </div>
+          <div class="absolute top-4 right-4 w-10 h-10 rounded-full glass flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-4 group-hover:translate-y-0">
+            <span class="iconify text-white" data-icon="lucide:external-link" data-width="16"></span>
+          </div>
+        </div>
+      </div>
+      <!-- Item 5 -->
+      <div class="portfolio-item card-lift rounded-2xl overflow-hidden group cursor-pointer" data-category="mobile">
+        <div class="relative aspect-[4/3] overflow-hidden">
+          <img src="https://picsum.photos/seed/edologia-mobile2/600/450.jpg" alt="Project" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-6">
+            <div>
+              <h4 class="text-white font-medium text-lg">Banking Super App</h4>
+              <p class="text-cyan-300 text-sm">Mobile App</p>
+            </div>
+          </div>
+          <div class="absolute top-4 right-4 w-10 h-10 rounded-full glass flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-4 group-hover:translate-y-0">
+            <span class="iconify text-white" data-icon="lucide:external-link" data-width="16"></span>
+          </div>
+        </div>
+      </div>
+      <!-- Item 6 -->
+      <div class="portfolio-item card-lift rounded-2xl overflow-hidden group cursor-pointer" data-category="branding">
+        <div class="relative aspect-[4/3] overflow-hidden">
+          <img src="https://picsum.photos/seed/edologia-brand2/600/450.jpg" alt="Project" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-6">
+            <div>
+              <h4 class="text-white font-medium text-lg">Startup Rebranding</h4>
+              <p class="text-cyan-300 text-sm">Branding</p>
+            </div>
+          </div>
+          <div class="absolute top-4 right-4 w-10 h-10 rounded-full glass flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-4 group-hover:translate-y-0">
+            <span class="iconify text-white" data-icon="lucide:external-link" data-width="16"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SKILLS ===== -->
+<section id="skills" class="relative z-10 py-24 px-6">
+  <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+    <!-- Content -->
+    <div class="reveal-left">
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass mb-6">
+        <span class="iconify text-cyan-400" data-icon="lucide:zap" data-width="14"></span>
+        <span class="text-xs font-medium text-cyan-300 tracking-wide uppercase">Keahlian</span>
+      </div>
+      <h2 class="text-3xl md:text-5xl font-semibold tracking-tight gradient-text mb-4">
+        Teknologi yang Kami Kuasai
+      </h2>
+      <p class="text-slate-400 font-light leading-relaxed mb-10">
+        Kami terus belajar dan mengadopsi teknologi terbaru untuk memberikan solusi terbaik bagi klien kami.
+      </p>
+
+      <!-- Progress Bars -->
+      <div class="space-y-6">
+        <div>
+          <div class="flex justify-between mb-2">
+            <span class="text-sm font-medium text-white">React / Next.js</span>
+            <span class="text-sm text-cyan-400">95%</span>
+          </div>
+          <div class="w-full h-2 rounded-full bg-white/5 overflow-hidden">
+            <div class="progress-bar h-full rounded-full bg-gradient-to-r from-cyan-500 to-cyan-400" data-width="95%"></div>
+          </div>
+        </div>
+        <div>
+          <div class="flex justify-between mb-2">
+            <span class="text-sm font-medium text-white">UI/UX Design</span>
+            <span class="text-sm text-cyan-400">90%</span>
+          </div>
+          <div class="w-full h-2 rounded-full bg-white/5 overflow-hidden">
+            <div class="progress-bar h-full rounded-full bg-gradient-to-r from-cyan-500 to-cyan-400" data-width="90%"></div>
+          </div>
+        </div>
+        <div>
+          <div class="flex justify-between mb-2">
+            <span class="text-sm font-medium text-white">TypeScript</span>
+            <span class="text-sm text-cyan-400">88%</span>
+          </div>
+          <div class="w-full h-2 rounded-full bg-white/5 overflow-hidden">
+            <div class="progress-bar h-full rounded-full bg-gradient-to-r from-cyan-500 to-cyan-400" data-width="88%"></div>
+          </div>
+        </div>
+        <div>
+          <div class="flex justify-between mb-2">
+            <span class="text-sm font-medium text-white">Flutter / React Native</span>
+            <span class="text-sm text-cyan-400">85%</span>
+          </div>
+          <div class="w-full h-2 rounded-full bg-white/5 overflow-hidden">
+            <div class="progress-bar h-full rounded-full bg-gradient-to-r from-cyan-500 to-cyan-400" data-width="85%"></div>
+          </div>
+        </div>
+        <div>
+          <div class="flex justify-between mb-2">
+            <span class="text-sm font-medium text-white">Node.js / Python</span>
+            <span class="text-sm text-cyan-400">82%</span>
+          </div>
+          <div class="w-full h-2 rounded-full bg-white/5 overflow-hidden">
+            <div class="progress-bar h-full rounded-full bg-gradient-to-r from-cyan-500 to-cyan-400" data-width="82%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tech Stack Visual -->
+    <div class="reveal-right relative flex items-center justify-center min-h-[400px]">
+      <div class="relative w-64 h-64">
+        <!-- Center -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 rounded-2xl bg-gradient-to-br from-cyan-500 to-cyan-400 flex items-center justify-center pulse-glow">
+          <span class="iconify text-white" data-icon="lucide:code-2" data-width="32"></span>
+        </div>
+        <!-- Orbit items -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-0 h-0">
+          <div class="orbit-1">
+            <div class="w-12 h-12 rounded-xl glass flex items-center justify-center">
+              <span class="iconify text-cyan-400" data-icon="lucide:atom" data-width="24"></span>
+            </div>
+          </div>
+        </div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-0 h-0">
+          <div class="orbit-2">
+            <div class="w-10 h-10 rounded-xl glass flex items-center justify-center">
+              <span class="iconify text-cyan-400" data-icon="lucide:figma" data-width="20"></span>
+            </div>
+          </div>
+        </div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-0 h-0">
+          <div class="orbit-3">
+            <div class="w-11 h-11 rounded-xl glass flex items-center justify-center">
+              <span class="iconify text-cyan-400" data-icon="lucide:database" data-width="22"></span>
+            </div>
+          </div>
+        </div>
+        <!-- Ring -->
+        <div class="absolute inset-0 rounded-full border border-white/5"></div>
+        <div class="absolute -inset-8 rounded-full border border-white/3"></div>
+        <div class="absolute -inset-16 rounded-full border border-white/2"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TESTIMONIALS ===== -->
+<section id="testimonials" class="relative z-10 py-24 px-6">
+  <div class="max-w-7xl mx-auto">
+    <!-- Header -->
+    <div class="reveal text-center max-w-2xl mx-auto mb-16">
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass mb-6">
+        <span class="iconify text-cyan-400" data-icon="lucide:message-circle" data-width="14"></span>
+        <span class="text-xs font-medium text-cyan-300 tracking-wide uppercase">Testimoni</span>
+      </div>
+      <h2 class="text-3xl md:text-5xl font-semibold tracking-tight gradient-text mb-4">
+        Kata Mereka Tentang Kami
+      </h2>
+    </div>
+
+    <!-- Testimonial Cards -->
+    <div class="stagger grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- T1 -->
+      <div class="card-lift glass rounded-2xl p-8 relative">
+        <span class="iconify text-cyan-500/20 absolute top-6 right-6" data-icon="lucide:quote" data-width="32"></span>
+        <div class="flex items-center gap-1 mb-4">
+          <span class="iconify text-yellow-400" data-icon="lucide:star" data-width="16"></span>
+          <span class="iconify text-yellow-400" data-icon="lucide:star" data-width="16"></span>
+          <span class="iconify text-yellow-400" data-icon="lucide:star" data-width="16"></span>
+          <span class="iconify text-yellow-400" data-icon="lucide:star" data-width="16"></span>
+          <span class="iconify text-yellow-400" data-icon="lucide:star" data-width="16"></span>
+        </div>
+        <p class="text-slate-300 font-light text-sm leading-relaxed mb-6">
+          "Edologia berhasil mengubah visi kami menjadi website yang luar biasa. Prosesnya profesional dan hasilnya melebihi ekspektasi."
+        </p>
+        <div class="flex items-center gap-3">
+          <img src="https://picsum.photos/seed/person1/80/80.jpg" alt="Avatar" class="w-10 h-10 rounded-full object-cover">
+          <div>
+            <div class="text-sm font-medium text-white">Andi Pratama</div>
+            <div class="text-xs text-slate-500">CEO, TechVenture</div>
+          </div>
+        </div>
+      </div>
+      <!-- T2 -->
+      <div class="card-lift glass rounded-2xl p-8 relative">
+        <span class="iconify text-cyan-500/20 absolute top-6 right-6" data-icon="lucide:quote" data-width="32"></span>
+        <div class="flex items-center gap-1 mb-4">
+          <span class="iconify text-yellow-400" data-icon="lucide:star" data-width="16"></span>
+          <span class="iconify text-yellow-400" data-icon="lucide:star" data-width="16"></span>
+          <span class="iconify text-yellow-400" data-icon="lucide:star" data-width="16"></span>
+          <span class="iconify text-yellow-400" data-icon="lucide:star" data-width="16"></span>
+          <span class="iconify text-yellow-400" data-icon="lucide:star" data-width="16"></span>
+        </div>
+        <p class="text-slate-300 font-light text-sm leading-relaxed mb-6">
+          "Aplikasi mobile yang mereka kembangkan sangat elegan dan performa luar biasa. Tim yang sangat responsif dan kreatif!"
+        </p>
+        <div class="flex items-center gap-3">
+          <img src="https://picsum.photos/seed/person2/80/80.jpg" alt="Avatar" class="w-10 h-10 rounded-full object-cover">
+          <div>
+            <div class="text-sm font-medium text-white">Sarah Wijaya</div>
+            <div class="text-xs text-slate-500">Founder, HealthFirst</div>
+          </div>
+        </div>
+      </div>
+      <!-- T3 -->
+      <div class="card-lift glass rounded-2xl p-8 relative">
+        <span class="iconify text-cyan-500/20 absolute top-6 right-6" data-icon="lucide:quote" data-width="32"></span>
+        <div class="flex items-center gap-1 mb-4">
+          <span class="iconify text-yellow-400" data-icon="lucide:star" data-width="16"></span>
+          <span class="iconify text-yellow-400" data-icon="lucide:star" data-width="16"></span>
+          <span class="iconify text-yellow-400" data-icon="lucide:star" data-width="16"></span>
+          <span class="iconify text-yellow-400" data-icon="lucide:star" data-width="16"></span>
+          <span class="iconify text-yellow-400" data-icon="lucide:star" data-width="16"></span>
+        </div>
+        <p class="text-slate-300 font-light text-sm leading-relaxed mb-6">
+          "Rebranding yang dilakukan Edologia memberikan identitas baru yang kuat. Konversi pelanggan kami meningkat 40% setelah peluncuran."
+        </p>
+        <div class="flex items-center gap-3">
+          <img src="https://picsum.photos/seed/person3/80/80.jpg" alt="Avatar" class="w-10 h-10 rounded-full object-cover">
+          <div>
+            <div class="text-sm font-medium text-white">Budi Santoso</div>
+            <div class="text-xs text-slate-500">CMO, GreenCommerce</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA / CONTACT ===== -->
+<section id="contact" class="relative z-10 py-32 px-6">
+  <div class="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-500/5 to-transparent"></div>
+  <div class="max-w-4xl mx-auto relative">
+    <div class="reveal text-center mb-16">
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass mb-6">
+        <span class="iconify text-cyan-400" data-icon="lucide:mail" data-width="14"></span>
+        <span class="text-xs font-medium text-cyan-300 tracking-wide uppercase">Kontak</span>
+      </div>
+      <h2 class="text-3xl md:text-6xl font-semibold tracking-tight gradient-text mb-4">
+        Mari Bekerja Sama
+      </h2>
+      <p class="text-slate-400 font-light leading-relaxed max-w-xl mx-auto">
+        Punya proyek menarik? Kami siap membantu mewujudkan ide Anda. Kirim pesan dan mari mulai diskusi.
+      </p>
+    </div>
+
+    <!-- Contact Form -->
+    <form id="contactForm" class="reveal glass rounded-3xl p-8 md:p-12 space-y-6">
+      <div class="grid md:grid-cols-2 gap-6">
+        <div>
+          <label class="block text-sm font-medium text-slate-300 mb-2">Nama</label>
+          <input type="text" required placeholder="Nama lengkap Anda"
+            class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/30 transition-all duration-300">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-300 mb-2">Email</label>
+          <input type="email" required placeholder="email@anda.com"
+            class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/30 transition-all duration-300">
+        </div>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-slate-300 mb-2">Jenis Proyek</label>
+        <select class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-slate-400 text-sm focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/30 transition-all duration-300 appearance-none cursor-pointer">
+          <option value="" class="bg-slate-900">Pilih jenis proyek</option>
+          <option value="web" class="bg-slate-900">Web Development</option>
+          <option value="mobile" class="bg-slate-900">Mobile App</option>
+          <option value="design" class="bg-slate-900">UI/UX Design</option>
+          <option value="branding" class="bg-slate-900">Branding</option>
+          <option value="other" class="bg-slate-900">Lainnya</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-slate-300 mb-2">Pesan</label>
+        <textarea rows="5" required placeholder="Ceritakan tentang proyek Anda..."
+          class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/30 transition-all duration-300 resize-none"></textarea>
+      </div>
+      <button type="submit" class="magnetic-btn w-full py-4 rounded-xl bg-cyan-500 text-white font-semibold text-sm hover:bg-cyan-400 transition-colors duration-300 flex items-center justify-center gap-2 group">
+        Kirim Pesan
+        <span class="iconify group-hover:translate-x-1 transition-transform duration-300" data-icon="lucide:send" data-width="16"></span>
+      </button>
+    </form>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="relative z-10 border-t border-white/5 py-16 px-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="grid md:grid-cols-4 gap-12 mb-12">
+      <!-- Brand -->
+      <div class="md:col-span-2">
+        <a href="#hero" class="flex items-center gap-2 mb-4">
+          <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-cyan-500 to-cyan-400 flex items-center justify-center text-white font-bold text-sm">E</div>
+          <span class="text-white font-semibold text-lg tracking-tight">edologia<span class="text-cyan-400">.biz.id</span></span>
+        </a>
+        <p class="text-slate-500 font-light text-sm leading-relaxed max-w-sm mb-6">
+          Studio kreatif yang menghadirkan solusi digital inovatif. Mengubah ide menjadi pengalaman digital yang memukau.
+        </p>
+        <!-- Social -->
+        <div class="flex items-center gap-4">
+          <a href="#" class="w-10 h-10 rounded-xl glass flex items-center justify-center text-slate-400 hover:text-cyan-400 hover:bg-white/10 transition-all duration-300">
+            <span class="iconify" data-icon="lucide:instagram" data-width="18"></span>
+          </a>
+          <a href="#" class="w-10 h-10 rounded-xl glass flex items-center justify-center text-slate-400 hover:text-cyan-400 hover:bg-white/10 transition-all duration-300">
+            <span class="iconify" data-icon="lucide:twitter" data-width="18"></span>
+          </a>
+          <a href="#" class="w-10 h-10 rounded-xl glass flex items-center justify-center text-slate-400 hover:text-cyan-400 hover:bg-white/10 transition-all duration-300">
+            <span class="iconify" data-icon="lucide:linkedin" data-width="18"></span>
+          </a>
+          <a href="#" class="w-10 h-10 rounded-xl glass flex items-center justify-center text-slate-400 hover:text-cyan-400 hover:bg-white/10 transition-all duration-300">
+            <span class="iconify" data-icon="lucide:github" data-width="18"></span>
+          </a>
+        </div>
+      </div>
+      <!-- Links -->
+      <div>
+        <h4 class="text-sm font-semibold text-white mb-4">Navigasi</h4>
+        <div class="space-y-3">
+          <a href="#about" class="block text-sm text-slate-500 hover:text-white transition-colors duration-150">Tentang</a>
+          <a href="#services" class="block text-sm text-slate-500 hover:text-white transition-colors duration-150">Layanan</a>
+          <a href="#portfolio" class="block text-sm text-slate-500 hover:text-white transition-colors duration-150">Portofolio</a>
+          <a href="#skills" class="block text-sm text-slate-500 hover:text-white transition-colors duration-150">Keahlian</a>
+        </div>
+      </div>
+      <!-- Contact -->
+      <div>
+        <h4 class="text-sm font-semibold text-white mb-4">Kontak</h4>
+        <div class="space-y-3">
+          <div class="flex items-center gap-2 text-sm text-slate-500">
+            <span class="iconify text-cyan-500/50" data-icon="lucide:mail" data-width="14"></span>
+            hello@edologia.biz.id
+          </div>
+          <div class="flex items-center gap-2 text-sm text-slate-500">
+            <span class="iconify text-cyan-500/50" data-icon="lucide:phone" data-width="14"></span>
+            +62 812 3456 7890
+          </div>
+          <div class="flex items-center gap-2 text-sm text-slate-500">
+            <span class="iconify text-cyan-500/50" data-icon="lucide:map-pin" data-width="14"></span>
+            Jakarta, Indonesia
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Bottom -->
+    <div class="border-t border-white/5 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+      <p class="text-xs text-slate-600">© 2025 edologia.biz.id — Semua hak dilindungi.</p>
+      <div class="flex items-center gap-6">
+        <a href="#" class="text-xs text-slate-600 hover:text-slate-400 transition-colors">Kebijakan Privasi</a>
+        <a href="#" class="text-xs text-slate-600 hover:text-slate-400 transition-colors">Syarat & Ketentuan</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Toast -->
+<div id="toast" class="toast">
+  <div class="flex items-center gap-3">
+    <span class="iconify" data-icon="lucide:check-circle" data-width="20"></span>
+    <span id="toastMsg">Pesan berhasil dikirim!</span>
+  </div>
+</div>
+
+<!-- ===== SCRIPTS ===== -->
+<script>
+// ---- Particles ----
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+let particles = [];
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+class Particle {
+  constructor() {
+    this.reset();
+  }
+  reset() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.size = Math.random() * 2 + 0.5;
+    this.speedX = (Math.random() - 0.5) * 0.3;
+    this.speedY = (Math.random() - 0.5) * 0.3;
+    this.opacity = Math.random() * 0.4 + 0.1;
+  }
+  update() {
+    this.x += this.speedX;
+    this.y += this.speedY;
+    if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) this.reset();
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(6,182,212,${this.opacity})`;
+    ctx.fill();
+  }
+}
+
+for (let i = 0; i < 80; i++) particles.push(new Particle());
+
+function animateParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p => { p.update(); p.draw(); });
+
+  // Draw connections
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 120) {
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.strokeStyle = `rgba(6,182,212,${0.06 * (1 - dist / 120)})`;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+    }
+  }
+  requestAnimationFrame(animateParticles);
+}
+animateParticles();
+
+// ---- Navbar scroll ----
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 50) {
+    navbar.classList.add('glass-solid', 'py-2');
+    navbar.classList.remove('py-4');
+  } else {
+    navbar.classList.remove('glass-solid', 'py-2');
+    navbar.classList.add('py-4');
+  }
+});
+
+// ---- Mobile menu ----
+const menuToggle = document.getElementById('menuToggle');
+const mobileMenu = document.getElementById('mobileMenu');
+menuToggle.addEventListener('click', () => {
+  mobileMenu.classList.toggle('hidden');
+});
+mobileMenu.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+});
+
+// ---- Typing Effect ----
+const typingWords = ['Pengalaman Digital', 'Solusi Inovatif', 'Identitas Visual', 'Masa Depan'];
+let wordIndex = 0, charIndex = 0, isDeleting = false;
+const typingEl = document.getElementById('typingText');
+
+function typeEffect() {
+  const current = typingWords[wordIndex];
+  if (isDeleting) {
+    typingEl.textContent = current.substring(0, charIndex - 1);
+    charIndex--;
+  } else {
+    typingEl.textContent = current.substring(0, charIndex + 1);
+    charIndex++;
+  }
+
+  let speed = isDeleting ? 50 : 100;
+
+  if (!isDeleting && charIndex === current.length) {
+    speed = 2000;
+    isDeleting = true;
+  } else if (isDeleting && charIndex === 0) {
+    isDeleting = false;
+    wordIndex = (wordIndex + 1) % typingWords.length;
+    speed = 300;
+  }
+  setTimeout(typeEffect, speed);
+}
+typeEffect();
+
+// ---- Scroll Reveal ----
+const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale, .stagger, .img-reveal');
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('active');
+    }
+  });
+}, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+
+revealElements.forEach(el => revealObserver.observe(el));
+
+// ---- Counter Animation ----
+const counters = document.querySelectorAll('.counter');
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const target = +entry.target.getAttribute('data-target');
+      let current = 0;
+      const increment = target / 60;
+      const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+          entry.target.textContent = target + '+';
+          clearInterval(timer);
+        } else {
+          entry.target.textContent = Math.floor(current) + '+';
         }
-        animateCursor();
+      }, 30);
+      counterObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.5 });
 
-        document.querySelectorAll('a, button, .service-card, .portfolio-item').forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                cursor.style.transform = 'scale(1.5)';
-                cursorFollower.style.transform = 'scale(1.5)';
-            });
-            el.addEventListener('mouseleave', () => {
-                cursor.style.transform = 'scale(1)';
-                cursorFollower.style.transform = 'scale(1)';
-            });
-        });
+counters.forEach(c => counterObserver.observe(c));
 
-        // ===== PARTICLES =====
-        const particlesContainer = document.getElementById('particles-container');
-        const colors = ['#6C63FF', '#FF6584', '#43E97B', '#FFC107', '#2196F3'];
+// ---- Progress Bars ----
+const progressBars = document.querySelectorAll('.progress-bar');
+const progressObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const w = entry.target.getAttribute('data-width');
+      entry.target.style.width = w;
+      progressObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.3 });
 
-        function createParticle() {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            const size = Math.random() * 6 + 2;
-            const color = colors[Math.floor(Math.random() * colors.length)];
-            const left = Math.random() * 100;
-            const duration = Math.random() * 15 + 10;
-            const delay = Math.random() * 10;
+progressBars.forEach(b => progressObserver.observe(b));
 
-            particle.style.cssText = `
-                width: ${size}px;
-                height: ${size}px;
-                background: ${color};
-                left: ${left}%;
-                animation-duration: ${duration}s;
-                animation-delay: ${delay}s;
-            `;
+// ---- Portfolio Filter ----
+const filterBtns = document.querySelectorAll('.filter-btn');
+const portfolioItems = document.querySelectorAll('.portfolio-item');
 
-            particlesContainer.appendChild(particle);
+filterBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    filterBtns.forEach(b => {
+      b.classList.remove('bg-cyan-500', 'text-white');
+      b.classList.add('glass', 'text-slate-400');
+    });
+    btn.classList.add('bg-cyan-500', 'text-white');
+    btn.classList.remove('glass', 'text-slate-400');
 
-            setTimeout(() => {
-                particle.remove();
-            }, (duration + delay) * 1000);
-        }
+    const filter = btn.getAttribute('data-filter');
+    portfolioItems.forEach(item => {
+      if (filter === 'all' || item.getAttribute('data-category') === filter) {
+        item.style.display = 'block';
+        item.style.opacity = '0';
+        item.style.transform = 'scale(0.9)';
+        setTimeout(() => {
+          item.style.opacity = '1';
+          item.style.transform = 'scale(1)';
+        }, 50);
+      } else {
+        item.style.opacity = '0';
+        item.style.transform = 'scale(0.9)';
+        setTimeout(() => { item.style.display = 'none'; }, 300);
+      }
+    });
+  });
+});
 
-        for (let i = 0; i < 20; i++) {
-            setTimeout(createParticle, i * 300);
-        }
-        setInterval(createParticle, 800);
+// Portfolio items transition style
+portfolioItems.forEach(item => {
+  item.style.transition = 'all 0.5s cubic-bezier(0.16,1,0.3,1)';
+});
 
-        // ===== NAVBAR =====
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
+// ---- Contact Form ----
+const contactForm = document.getElementById('contactForm');
+const toast = document.getElementById('toast');
+const toastMsg = document.getElementById('toastMsg');
 
-            // Back to top
-            const backToTop = document.getElementById('backToTop');
-            if (window.scrollY > 500) {
-                backToTop.classList.add('show');
-            } else {
-                backToTop.classList.remove('show');
-            }
-        });
+function showToast(msg) {
+  toastMsg.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3500);
+}
 
-        // ===== MOBILE MENU =====
-        function openMobileMenu() {
-            document.getElementById('mobileMenu').classList.add('open');
-            document.getElementById('mobileOverlay').classList.add('show');
-        }
+contactForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const btn = contactForm.querySelector('button[type="submit"]');
+  btn.innerHTML = '<span class="iconify animate-spin" data-icon="lucide:loader-2" data-width="18"></span> Mengirim...';
+  btn.disabled = true;
 
-        function closeMobileMenu() {
-            document.getElementById('mobileMenu').classList.remove('open');
-            document.getElementById('mobileOverlay').classList.remove('show');
-        }
+  setTimeout(() => {
+    btn.innerHTML = 'Kirim Pesan <span class="iconify" data-icon="lucide:send" data-width="16"></span>';
+    btn.disabled = false;
+    contactForm.reset();
+    showToast('✅ Pesan berhasil dikirim! Kami akan segera menghubungi Anda.');
+  }, 2000);
+});
 
-        // ===== TYPED TEXT =====
-        const typedTexts = [
-            'Digital Experiences',
-            'Beautiful Websites',
-            'Brand Identities',
-            'Amazing Motion',
-            'Your Vision'
-        ];
+// ---- Smooth Scroll ----
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function(e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
 
-        let textIndex = 0;
-        let charIndex = 0;
-        let isDeleting = false;
-        const typedEl = document.getElementById('typed-text');
+// ---- Tilt effect on portfolio items ----
+document.querySelectorAll('.card-lift').forEach(card => {
+  card.addEventListener('mousemove', (e) => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateX = (y - centerY) / 20;
+    const rotateY = (centerX - x) / 20;
+    card.style.transform = `translateY(-8px) perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = 'translateY(0) perspective(1000px) rotateX(0) rotateY(0)';
+  });
+});
 
-        function typeText() {
-            const currentText = typedTexts[textIndex];
+// ---- Parallax on scroll for hero elements ----
+window.addEventListener('scroll', () => {
+  const scrolled = window.scrollY;
+  const hero = document.getElementById('hero');
+  if (hero) {
+    const elements = hero.querySelectorAll('.float-1, .float-2, .float-3');
+    elements.forEach((el, i) => {
+      el.style.transform = `translateY(${scrolled * (0.1 + i * 0.05)}px)`;
+    });
+  }
+});
+</script>
 
-            if (isDeleting) {
-                typedEl.textContent = currentText.substring(0, charIndex - 1);
-                charIndex--;
-            } else {
-                typedEl.textContent = currentText.substring(0, charIndex + 1);
-                charIndex++;
-            }
-
-            let speed = isDeleting ? 60 : 100;
-
-            if (!isDeleting && charIndex === currentText.length) {
-                speed = 2000;
-                isDeleting = true;
-            } else if (isDeleting && charIndex === 0) {
-                isDeleting = false;
-                textIndex = (textIndex + 1) % typedTexts.length;
-                speed = 300;
-            }
-
-            setTimeout(typeText, speed);
-        }
-
-        setTimeout(typeText, 2500);
-
-        // ===== SCROLL ANIMATIONS =====
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-
-                    // Animate skill bars
-                    const skillFills = entry.target.querySelectorAll('.skill-fill');
-                    skillFills.forEach(fill => {
-                        const width = fill.getAttribute('data-width');
-                        fill.style.width = width + '%';
-                    });
-
-                    // Animate counters
-                    const statNumbers = entry.target.querySelectorAll('.stat-number');
-                    statNumbers.forEach(num => {
-                        const target = parseInt(num.getAttribute('data-count'));
-                        if (target && num.textContent === '0') {
-                            animateCounter(num, target);
-                        }
-                    });
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.animate-on-scroll').forEach(el => {
-            observer.observe(el);
-        });
-
-        // Also observe stat cards specifically
-        document.querySelectorAll('.stat-card').forEach(el => {
-            observer.observe(el);
-        });
-
-        // ===== COUNTER ANIMATION =====
-        function animateCounter(el, target) {
-            let current = 0;
-            const increment = target / 60;
-            const timer = setInterval(() => {
-                current += increment;
-                if (current >= target) {
-                    current = target;
-                    clearInterval(timer);
-                }
-                el.textContent = Math.floor(current) + (target >= 5 ? '+' : '');
-            }, 30);
-        }
-
-        // ===== PORTFOLIO FILTER =====
-        function filterPortfolio(category, btn) {
-            // Update active button
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-
-            const items = document.querySelectorAll('.portfolio-item');
-            items.forEach(item => {
-                if (category === 'all' || item.dataset.category === category) {
-                    item.style.opacity = '1';
-                    item.style.transform = 'scale(1)';
-                    item.style.display = 'block';
-                } else {
-                    item.style.opacity = '0';
-                    item.style.transform = 'scale(0.8)';
-                    setTimeout(() => {
-                        item.style.display = 'none';
-                    }, 300);
-                }
-            });
-        }
-
-        // ===== CONTACT FORM =====
-        function submitForm(e) {
-            e.preventDefault();
-            const btn = e.target.querySelector('.submit-btn');
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengirim...';
-            btn.disabled = true;
-
-            setTimeout(() => {
-                btn.innerHTML = '<i class="fas fa-check"></i> Terkirim!';
-                btn.style.background = 'linear-gradient(135deg, #43E97B, #38F9D7)';
-
-                const notification = document.getElementById('notification');
-                notification.classList.add('show');
-
-                setTimeout(() => {
-                    notification.classList.remove('show');
-                    btn.innerHTML = '<i class="fas fa-paper-plane"></i> Kirim Pesan';
-                    btn.style.background = '';
-                    btn.disabled = false;
-                    e.target.reset();
-                }, 4000);
-            }, 2000);
-        }
-
-        // ===== SMOOTH PARALLAX =====
-        window.addEventListener('scroll', () => {
-            const scrollY = window.scrollY;
-            const orbs = document.querySelectorAll('.hero-orb');
-            orbs.forEach((orb, i) => {
-                orb.style.transform = `translateY(${scrollY * (0.1 + i * 0.05)}px)`;
-            });
-        });
-
-        // ===== ACTIVE NAV LINK =====
-        const sections = document.querySelectorAll('section[id]');
-        window.addEventListener('scroll', () => {
-            const scrollY = window.scrollY + 100;
-            sections.forEach(section => {
-                const top = section.offsetTop;
-                const height = section.offsetHeight;
-                const id = section.getAttribute('id');
-                const navLink = document.querySelector(`.nav-links a[href="#${id}"]`);
-                if (navLink && scrollY >= top && scrollY < top + height) {
-                    document.querySelectorAll('.nav-links a').forEach(a => a.style.color = '');
-                    navLink.style.color = 'var(--primary)';
-                }
-            });
-        });
-
-        // ===== TILT EFFECT FOR CARDS =====
-        document.querySelectorAll('.service-card, .stat-card').forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                const rotateX = (y - centerY) / 20;
-                const rotateY = (centerX - x) / 20;
-
-                card.style.transform = `translateY(-10px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-            });
-
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = '';
-            });
-        });
-    </script>
 </body>
 </html>
